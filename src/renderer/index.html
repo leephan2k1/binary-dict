@@ -128,7 +128,39 @@
       </nav>
 
       <!-- main -->
-      <main class="col-span-9 h-screen w-full bg-primary"></main>
+      <main
+        class="col-span-9 h-screen w-full bg-primary flex flex-col items-center"
+      >
+        <!-- search frame  -->
+        <div class="w-[50%] h-[30%] flex justify-center items-center">
+          <form
+            name="search"
+            class="w-[90%] bg-white border-2 border-gray-300 overflow-hidden h-10 rounded-2xl flex shadow-2xl"
+          >
+            <div class="flex w-full items-center p-2">
+              <input
+                type="text"
+                class="w-full h-full px-4 focus:outline-none"
+                placeholder="Nhập từ vựng..."
+              />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6 cursor-pointer"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+            </div>
+          </form>
+        </div>
+      </main>
     </div>
   </body>
 </html>
