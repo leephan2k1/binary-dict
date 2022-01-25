@@ -5,7 +5,7 @@
 @tailwind utilities;
 
 .menu-item {
-  @apply w-full text-lg flex justify-start p-4 cursor-pointer;
+  @apply w-full text-lg flex justify-start p-4 cursor-pointer font-medium;
 }
 .active {
   @apply bg-secondary-200 border-l-8 border-green-400 text-gray-800;
