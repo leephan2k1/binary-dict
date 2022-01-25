@@ -7,10 +7,128 @@
     <link rel="stylesheet" href="./styles.css" />
     <title>Binary Dictionary</title>
   </head>
-  <body>
+  <body class="font-body">
     <div class="grid grid-cols-12">
-      <nav class="col-span-3 h-screen w-full bg-green-300">nav</nav>
-      <main class="col-span-9 h-screen w-full bg-red-200">main</main>
+      <nav
+        class="col-span-3 h-screen w-full bg-secondary-100 flex flex-col items-center"
+      >
+        <!-- logo -->
+        <div class="m-10 w-full flex flex-col items-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-20 w-20 text-green-400 font-thin"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+            />
+          </svg>
+          <div class="font-logo text-[90%] text-gray-700">
+            <span>01</span>
+            <span>Dictionary</span>
+          </div>
+        </div>
+
+        <!-- menu   -->
+        <ul class="font-bold w-full flex flex-col items-center text-gray-700">
+          <li class="menu-item active">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6 inline-block"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2h-1.528A6 6 0 004 9.528V4z"
+              />
+              <path
+                fill-rule="evenodd"
+                d="M8 10a4 4 0 00-3.446 6.032l-1.261 1.26a1 1 0 101.414 1.415l1.261-1.261A4 4 0 108 10zm-2 4a2 2 0 114 0 2 2 0 01-4 0z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            <span class="mx-3">Tìm kiếm</span>
+          </li>
+          <li class="menu-item">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6 inline-block"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+            <span class="mx-3">Danh sách từ</span>
+          </li>
+          <li class="menu-item">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6 inline-block"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              />
+            </svg>
+            <span class="mx-3">Thêm từ</span>
+          </li>
+
+          <li class="menu-item">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6 inline-block"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M16 15v-1a4 4 0 00-4-4H8m0 0l3 3m-3-3l3-3m9 14V5a2 2 0 00-2-2H6a2 2 0 00-2 2v16l4-2 4 2 4-2 4 2z"
+              />
+            </svg>
+            <span class="mx-3">Từ vừa tra</span>
+          </li>
+
+          <li class="menu-item">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6 inline-block"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <span class="mx-3">Thông tin</span>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- main -->
+      <main class="col-span-9 h-screen w-full bg-primary"></main>
     </div>
   </body>
 </html>

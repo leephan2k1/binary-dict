@@ -1,3 +1,12 @@
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@200;300&family=Press+Start+2P&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.menu-item {
+  @apply w-full text-lg flex justify-start p-4 cursor-pointer;
+}
+.active {
+  @apply bg-secondary-200 border-l-8 border-green-400 text-gray-800;
+}
