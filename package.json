@@ -1,0 +1,19 @@
+{
+  "name": "binary-dict",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "style": "tailwindcss -i ./src/styles/app.css -o ./src/renderer/styles.css --watch",
+    "style-build": "tailwindcss -o ./src/renderer/styles.css --minify",
+    "start": "electron ./src/main"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^16.0.7",
+    "electron-reload": "^2.0.0-alpha.1",
+    "tailwindcss": "^3.0.16"
+  }
+}
