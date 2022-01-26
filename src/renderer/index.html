@@ -35,7 +35,9 @@
         </div>
 
         <!-- menu   -->
-        <ul class="font-bold w-full flex flex-col items-center text-gray-600">
+        <ul
+          class="font-bold w-full flex flex-col items-center text-gray-600 select-none"
+        >
           <li class="menu-item active">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -150,7 +152,10 @@
         class="col-span-9 h-screen w-full bg-primary flex flex-col items-center"
       >
         <!-- search frame  -->
-        <div class="w-[50%] h-[20%] flex justify-center items-center">
+        <div
+          id="search-frame"
+          class="frame w-[50%] h-[30%] flex justify-center items-center"
+        >
           <form
             name="search"
             class="w-[90%] bg-white border-2 border-gray-300 overflow-hidden h-10 rounded-2xl flex shadow-2xl"
@@ -180,10 +185,10 @@
         </div>
 
         <!-- search result  -->
-        <!-- <div
-          class="w-[80%] h-[60%] border-2 border-gray-300 rounded-2xl overflow-x-hidden shadow-2xl flex flex-col scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100"
+        <div
+          id="result-frame"
+          class="w-[80%] h-[60%] border-2 border-gray-300 rounded-2xl overflow-x-hidden shadow-2xl flex flex-col scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 frame"
         >
-         
           <div>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -232,10 +237,17 @@
               </ul>
             </li>
           </ul>
-        </div> -->
+        </div>
 
-        <div id="fiter" class="w-full h-[10%] flex items-center justify-center">
-          <select name="filter-word" id="filter-word" class="p-1 border-2 border-gray-500 rounded-md focus:outline-none ml-6">
+        <div
+          id="filter"
+          class="frame hidden w-full h-[10%] flex items-center justify-center"
+        >
+          <select
+            name="filter-word"
+            id="filter-word"
+            class="p-1 border-2 border-gray-500 rounded-md focus:outline-none ml-6"
+          >
             <option value="" disabled selected hidden>Loại từ</option>
             <option value="all">Tất cả</option>
             <option value="noun">danh từ</option>
@@ -243,18 +255,21 @@
             <option value="verb">động từ</option>
             <option value="adv">trạng từ</option>
           </select>
-          <select name="filter-word" id="filter-word" class="p-1 border-2 border-gray-500 rounded-md focus:outline-none ml-6">
+          <select
+            name="filter-word"
+            id="filter-word"
+            class="p-1 border-2 border-gray-500 rounded-md focus:outline-none ml-6"
+          >
             <option value="" disabled selected hidden>Sắp xếp</option>
             <option value="all">Tất cả</option>
             <option value="noun">a - z</option>
             <option value="adj">z - a</option>
-          
           </select>
         </div>
         <!-- list result -->
         <div
           id="wordList"
-          class="w-[80%] h-[60%] border-2 border-gray-300 rounded-2xl overflow-x-hidden shadow-2xl flex flex-col scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100"
+          class="frame hidden w-[80%] h-[60%] border-2 border-gray-300 rounded-2xl overflow-x-hidden shadow-2xl flex flex-col scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100"
         >
           <ul id="wordList__details">
             <li class="p-4 even:bg-gray-300">
@@ -296,7 +311,62 @@
             </li>
           </ul>
         </div>
+
+        <!-- add word -->
+        <div
+          id="add-word-frame"
+          class="frame hidden w-full h-full flex justify-center items-center"
+        >
+          <form class="w-[80%] h-[60%] flex flex-col">
+            <label for="word" class="font-semibold mt-3 w-[70%]"
+              >Từ vựng <span class="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              placeholder="Nhập từ vựng..."
+              class="w-[70%] rounded-md p-2 border-2 border-gray-400"
+            />
+            <label for="word" class="font-semibold mt-3 w-[70%]"
+              >Nghĩa của từ <span class="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              placeholder="Nhập nghĩa..."
+              class="w-[70%] rounded-md p-2 border-2 border-gray-400"
+            />
+            <label for="word" class="font-semibold mt-3 w-[70%]"
+              >Loại từ <span class="text-red-500">*</span>
+            </label>
+            <select
+              name="word-type"
+              id="word-type"
+              class="w-[30%] h-9 rounded-md border-2 border-gray-400"
+            >
+              <option value="noun">danh từ</option>
+              <option value="adj">tính từ</option>
+              <option value="verb">động từ</option>
+              <option value="adv">trạng từ</option>
+            </select>
+            <label for="word" class="font-semibold mt-3 w-[70%]"
+              >Nhập câu ví dụ
+            </label>
+            <input
+              type="text"
+              placeholder="Nhập câu ví dụ..."
+              class="w-[70%] rounded-md p-2 border-2 border-gray-400"
+            />
+            <div class="w-[70%] flex justify-center">
+              <input
+                type="submit"
+                value="Thêm từ"
+                class="mt-4 w-[30%] rounded-md p-2 border-2 border-gray-400 bg-blue-200"
+              />
+            </div>
+          </form>
+        </div>
       </main>
     </div>
   </body>
+
+  <script src="./app/index.js"></script>
 </html>
