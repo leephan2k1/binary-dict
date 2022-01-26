@@ -13,7 +13,16 @@ module.exports = {
         logo: ["'Press Start 2P', cursive"],
         body: ["'Nunito', sans-serif"],
       },
+
+      listStyleType: {
+        circle: "circle",
+      },
+      scrollbar: {
+        "scrollbar-thumb-rounded": ["rounded-2xl"],
+      }
     },
   },
-  plugins: [],
+  plugins: [
+    require('tailwind-scrollbar'),
+  ],
 };
