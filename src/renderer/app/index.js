@@ -43,6 +43,8 @@ const app = {
         searchFrameDOM.classList.add("h-[30%]");
         break;
       case 1:
+      case 3:
+      case 4:
         //display search + filter + word list
         searchFrameDOM.classList.remove("hidden", "h-[30%]");
         searchFrameDOM.classList.add("h-[20%]");
@@ -50,6 +52,7 @@ const app = {
         wordListDOM.classList.remove("hidden");
         break;
       case 2:
+        //display add word form
         addWordFrameDOM.classList.remove("hidden");
         break;
     }
