@@ -323,7 +323,7 @@
             </label>
             <input
               type="text"
-              placeholder="Nhập từ vựng..."
+              placeholder="Nhập từ vựng (English)..."
               class="w-[70%] rounded-md p-2 border-2 border-gray-400"
             />
             <label for="word" class="font-semibold mt-3 w-[70%]"
@@ -331,7 +331,7 @@
             </label>
             <input
               type="text"
-              placeholder="Nhập nghĩa..."
+              placeholder="Nhập nghĩa (tiếng Việt)..."
               class="w-[70%] rounded-md p-2 border-2 border-gray-400"
             />
             <label for="word" class="font-semibold mt-3 w-[70%]"
@@ -352,10 +352,10 @@
             </label>
             <input
               type="text"
-              placeholder="Nhập câu ví dụ..."
+              placeholder="Nhập câu ví dụ (có thể bỏ qua)..."
               class="w-[70%] rounded-md p-2 border-2 border-gray-400"
             />
-            <div class="w-[70%] flex justify-center">
+            <div class="w-[70%] flex justify-center transition-all hover:scale-[110%]">
               <input
                 type="submit"
                 value="Thêm từ"
@@ -363,6 +363,24 @@
               />
             </div>
           </form>
+        </div>
+
+        <!-- software info -->
+        <div id="software-info-frame" class="frame hidden w-full h-full flex justify-center items-center">
+          <div class="w-[70%] flex flex-col">
+            <p class="font-semibold text-center text-2xl mb-4 text-green-400">Binary Dictionary v1.0</p>
+            <p class="my-1 text-lg">Tác giả: Triết Lý (Lee fb.com/leephan2001).</p>
+            <p class="my-1 text-lg">Binary Dictionary là từ điển giúp dịch từ vựng và những tiện ích khác không cần kết nối internet.</p>
+            <p class="my-1 text-lg font-bold">FAQs</p>
+            <p class="my-1 text-lg font-semibold">Vì sao phần mềm có tên Binary Dictionary?</p>
+            <p class="my-1 text-lg">Binary Dictionary tạm dịch là từ điển nhị phân. Sóng bắt đầu từ gió, mọi phần mềm thì bắt đầu từ mã nhị phân. Cây tìm kiếm nhị phân cũng là cấu trúc được cài đặt bên dưới phần mềm để tăng tốc độ cho việc tìm kiếm cả trăm nghìn từ vựng trong file.</p>
+            <p class="my-1 text-lg font-semibold">Công cụ dùng để phát triển là gì?</p>
+            <p class="my-1 text-lg">VSCode, Git với rất nhiều đam mê và tâm huyết ❤.</p>
+            <p class="my-1 text-lg font-semibold">Phần mềm dùng những công nghệ gì?</p>
+            <p class="my-1 text-lg">Electron JS, NodeJS, TailwindCSS.</p>
+            <p class="my-1 text-lg font-semibold">Kiến thức để áp dụng là gì?</p>
+            <p class="my-1 text-lg">Javascript, HTML, CSS, Data structure (Binary Search Tree).</p>
+          </div>
         </div>
       </main>
     </div>

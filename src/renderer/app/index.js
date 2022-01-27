@@ -6,6 +6,7 @@ const wordListDOM = document.querySelector("#wordList");
 const filterDOM = document.querySelector("#filter");
 const searchFrameDOM = document.querySelector("#search-frame");
 const addWordFrameDOM = document.querySelector("#add-word-frame");
+const softwareInfoDOM = document.querySelector("#software-info-frame");
 
 const app = {
   activeNavbar: function () {
@@ -55,6 +56,10 @@ const app = {
         //display add word form
         addWordFrameDOM.classList.remove("hidden");
         break;
+      case 5:
+         //display info frame
+         softwareInfoDOM.classList.remove('hidden');
+      break;
     }
   },
 };
