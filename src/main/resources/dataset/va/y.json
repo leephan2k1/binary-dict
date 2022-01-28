@@ -1,0 +1,544 @@
+[
+   {
+      "description":"noun: he, him",
+      "html":"<h1>y</h1><h2>noun</h2><ul><li>he, him</li></ul>",
+      "id":23386,
+      "pronounce":"",
+      "word":"y",
+      "word_types":[
+         "noun"
+      ]
+   },
+   {
+      "description":"noun: medicine",
+      "html":"<h1>y học</h1><h2>noun</h2><ul><li>medicine</li></ul>",
+      "id":23387,
+      "pronounce":"",
+      "word":"y học",
+      "word_types":[
+         "noun"
+      ]
+   },
+   {
+      "description":"noun: medicine",
+      "html":"<h1>y khoa</h1><h2>noun</h2><ul><li>medicine</li></ul>",
+      "id":23388,
+      "pronounce":"",
+      "word":"y khoa",
+      "word_types":[
+         "noun"
+      ]
+   },
+   {
+      "description":"adj: intact, unchanged",
+      "html":"<h1>y nguyên</h1><h2>adj</h2><ul><li>intact, unchanged</li></ul>",
+      "id":23389,
+      "pronounce":"",
+      "word":"y nguyên",
+      "word_types":[
+         "adj"
+      ]
+   },
+   {
+      "description":"noun: garments, clothes",
+      "html":"<h1>y phục</h1><h2>noun</h2><ul><li>garments, clothes</li></ul>",
+      "id":23390,
+      "pronounce":"",
+      "word":"y phục",
+      "word_types":[
+         "noun"
+      ]
+   },
+   {
+      "description":"noun: physician",
+      "html":"<h1>y sĩ</h1><h2>noun</h2><ul><li>physician</li></ul>",
+      "id":23391,
+      "pronounce":"",
+      "word":"y sĩ",
+      "word_types":[
+         "noun"
+      ]
+   },
+   {
+      "description":"noun: nurse",
+      "html":"<h1>y tá</h1><h2>noun</h2><ul><li>nurse</li></ul>",
+      "id":23392,
+      "pronounce":"",
+      "word":"y tá",
+      "word_types":[
+         "noun"
+      ]
+   },
+   {
+      "description":"noun: health service",
+      "html":"<h1>y tế</h1><h2>noun</h2><ul><li>health service</li></ul>",
+      "id":23393,
+      "pronounce":"",
+      "word":"y tế",
+      "word_types":[
+         "noun"
+      ]
+   },
+   {
+      "description":"noun: hospital",
+      "html":"<h1>y viện</h1><h2>noun</h2><ul><li>hospital</li></ul>",
+      "id":23394,
+      "pronounce":"",
+      "word":"y viện",
+      "word_types":[
+         "noun"
+      ]
+   },
+   {
+      "description":"verb: to depend on",
+      "html":"<h1>ỷ</h1><h2>verb</h2><ul><li>to depend on</li></ul>",
+      "id":23395,
+      "pronounce":"",
+      "word":"ỷ",
+      "word_types":[
+         "verb"
+      ]
+   },
+   {
+      "description":"noun: idea",
+      "html":"<h1>ý</h1><h2>noun</h2><ul><li>idea-Italy<br/><ul style=\"list-style-type:circle\"><li>người ý:<i>Italian</i></li></ul></li></ul>",
+      "id":23396,
+      "pronounce":"",
+      "word":"ý",
+      "word_types":[
+         "noun"
+      ]
+   },
+   {
+      "description":"noun: will",
+      "html":"<h1>ý chí</h1><h2>noun</h2><ul><li>will</li></ul>",
+      "id":23397,
+      "pronounce":"",
+      "word":"ý chí",
+      "word_types":[
+         "noun"
+      ]
+   },
+   {
+      "description":"noun: intention",
+      "html":"<h1>ý định</h1><h2>noun</h2><ul><li>intention</li></ul>",
+      "id":23398,
+      "pronounce":"",
+      "word":"ý định",
+      "word_types":[
+         "noun"
+      ]
+   },
+   {
+      "description":"noun: view, opinion",
+      "html":"<h1>ý kiến</h1><h2>noun</h2><ul><li>view, opinion</li></ul>",
+      "id":23399,
+      "pronounce":"",
+      "word":"ý kiến",
+      "word_types":[
+         "noun"
+      ]
+   },
+   {
+      "description":"verb: wish, desire",
+      "html":"<h1>ý muốn</h1><h2>verb</h2><ul><li>wish, desire</li></ul>",
+      "id":23400,
+      "pronounce":"",
+      "word":"ý muốn",
+      "word_types":[
+         "verb"
+      ]
+   },
+   {
+      "description":"noun: idea, thought",
+      "html":"<h1>ý nghĩ</h1><h2>noun</h2><ul><li>idea, thought</li></ul>",
+      "id":23401,
+      "pronounce":"",
+      "word":"ý nghĩ",
+      "word_types":[
+         "noun"
+      ]
+   },
+   {
+      "description":"noun: mean, sense",
+      "html":"<h1>ý nghĩa</h1><h2>noun</h2><ul><li>mean, sense</li></ul>",
+      "id":23402,
+      "pronounce":"",
+      "word":"ý nghĩa",
+      "word_types":[
+         "noun"
+      ]
+   },
+   {
+      "description":"noun: concept, notion",
+      "html":"<h1>ý niệm</h1><h2>noun</h2><ul><li>concept, notion</li></ul>",
+      "id":23403,
+      "pronounce":"",
+      "word":"ý niệm",
+      "word_types":[
+         "noun"
+      ]
+   },
+   {
+      "description":"noun: consciousness",
+      "html":"<h1>ý thức</h1><h2>noun</h2><ul><li>consciousness</li></ul>",
+      "id":23404,
+      "pronounce":"",
+      "word":"ý thức",
+      "word_types":[
+         "noun"
+      ]
+   },
+   {
+      "description":"noun: idea, thought",
+      "html":"<h1>ý tưởng</h1><h2>noun</h2><ul><li>idea, thought</li></ul>",
+      "id":23405,
+      "pronounce":"",
+      "word":"ý tưởng",
+      "word_types":[
+         "noun"
+      ]
+   },
+   {
+      "description":"adj: savoury, meaningful",
+      "html":"<h1>ý vị</h1><h2>adj</h2><ul><li>savoury, meaningful</li></ul>",
+      "id":23406,
+      "pronounce":"",
+      "word":"ý vị",
+      "word_types":[
+         "adj"
+      ]
+   },
+   {
+      "description":"verb: to hide",
+      "html":"<h1>yểm</h1><h2>verb</h2><ul><li>to hide</li></ul>",
+      "id":23407,
+      "pronounce":"",
+      "word":"yểm",
+      "word_types":[
+         "verb"
+      ]
+   },
+   {
+      "description":"verb: support",
+      "html":"<h1>yểm hộ</h1><h2>verb</h2><ul><li>support</li></ul>",
+      "id":23408,
+      "pronounce":"",
+      "word":"yểm hộ",
+      "word_types":[
+         "verb"
+      ]
+   },
+   {
+      "description":"verb: support",
+      "html":"<h1>yểm trợ</h1><h2>verb</h2><ul><li>support</li></ul>",
+      "id":23409,
+      "pronounce":"",
+      "word":"yểm trợ",
+      "word_types":[
+         "verb"
+      ]
+   },
+   {
+      "description":"noun: brassiere",
+      "html":"<h1>yếm</h1><h2>noun</h2><ul><li>brassiere<ul style=\"list-style-type:circle\"><li>yếm đào</li></ul></li></ul>",
+      "id":23410,
+      "pronounce":"",
+      "word":"yếm",
+      "word_types":[
+         "noun"
+      ]
+   },
+   {
+      "description":"noun: bib",
+      "html":"<h1>yếm dãi</h1><h2>noun</h2><ul><li>bib</li></ul>",
+      "id":23411,
+      "pronounce":"",
+      "word":"yếm dãi",
+      "word_types":[
+         "noun"
+      ]
+   },
+   {
+      "description":"adj: pessimistic",
+      "html":"<h1>yếm thế</h1><h2>adj</h2><ul><li>pessimistic</li></ul>",
+      "id":23412,
+      "pronounce":"",
+      "word":"yếm thế",
+      "word_types":[
+         "adj"
+      ]
+   },
+   {
+      "description":"noun: saddle",
+      "html":"<h1>yên</h1><h2>noun</h2><ul><li>saddle</li></ul><h2>adj</h2><ul><li>quiet, unmoved</li></ul>",
+      "id":23413,
+      "pronounce":"",
+      "word":"yên",
+      "word_types":[
+         "noun",
+         "adj"
+      ]
+   },
+   {
+      "description":"adj: quiet, calm, silent",
+      "html":"<h1>yên lặng</h1><h2>adj</h2><ul><li>quiet, calm, silent</li></ul>",
+      "id":23414,
+      "pronounce":"",
+      "word":"yên lặng",
+      "word_types":[
+         "adj"
+      ]
+   },
+   {
+      "description":"adj: peaceful, safe",
+      "html":"<h1>yên ổn</h1><h2>adj</h2><ul><li>peaceful, safe</li></ul>",
+      "id":23415,
+      "pronounce":"",
+      "word":"yên ổn",
+      "word_types":[
+         "adj"
+      ]
+   },
+   {
+      "description":"adj: convinced",
+      "html":"<h1>yên trí</h1><h2>adj</h2><ul><li>convinced</li></ul>",
+      "id":23416,
+      "pronounce":"",
+      "word":"yên trí",
+      "word_types":[
+         "adj"
+      ]
+   },
+   {
+      "description":"noun: (d-ộng) swallow ten kilogramme",
+      "html":"<h1>yến</h1><h2>noun</h2><ul><li>(d-ộng) swallow ten kilogramme</li></ul>",
+      "id":23417,
+      "pronounce":"",
+      "word":"yến",
+      "word_types":[
+         "noun"
+      ]
+   },
+   {
+      "description":"noun: banquet, feast",
+      "html":"<h1>yến tiệc</h1><h2>noun</h2><ul><li>banquet, feast</li></ul>",
+      "id":23418,
+      "pronounce":"",
+      "word":"yến tiệc",
+      "word_types":[
+         "noun"
+      ]
+   },
+   {
+      "description":"adj: swaggeringly heroic",
+      "html":"<h1>yêng hùng</h1><h2>adj</h2><ul><li>swaggeringly heroic</li></ul>",
+      "id":23419,
+      "pronounce":"",
+      "word":"yêng hùng",
+      "word_types":[
+         "adj"
+      ]
+   },
+   {
+      "description":"verb: to post, to placard",
+      "html":"<h1>yết</h1><h2>verb</h2><ul><li>to post, to placard</li></ul>",
+      "id":23420,
+      "pronounce":"",
+      "word":"yết",
+      "word_types":[
+         "verb"
+      ]
+   },
+   {
+      "description":"verb: pharynx",
+      "html":"<h1>yết hầu</h1><h2>verb</h2><ul><li>pharynx</li></ul>",
+      "id":23421,
+      "pronounce":"",
+      "word":"yết hầu",
+      "word_types":[
+         "verb"
+      ]
+   },
+   {
+      "description":"verb: to visit",
+      "html":"<h1>yết kiến</h1><h2>verb</h2><ul><li>to visit</li></ul>",
+      "id":23422,
+      "pronounce":"",
+      "word":"yết kiến",
+      "word_types":[
+         "verb"
+      ]
+   },
+   {
+      "description":"verb, noun post, playcard: ",
+      "html":"<h1>yết thị</h1><h2>verb, noun post, playcard</h2>",
+      "id":23423,
+      "pronounce":"",
+      "word":"yết thị",
+      "word_types":[
+         "noun",
+         "verb"
+      ]
+   },
+   {
+      "description":"verb: love, to be in love with",
+      "html":"<h1>yêu</h1><h2>verb</h2><ul><li>love, to be in love with</li></ul>",
+      "id":23424,
+      "pronounce":"",
+      "word":"yêu",
+      "word_types":[
+         "verb"
+      ]
+   },
+   {
+      "description":"verb: require, ask",
+      "html":"<h1>yêu cầu</h1><h2>verb</h2><ul><li>require, ask</li></ul>",
+      "id":23425,
+      "pronounce":"",
+      "word":"yêu cầu",
+      "word_types":[
+         "verb"
+      ]
+   },
+   {
+      "description":"verb: to like",
+      "html":"<h1>yêu chuộng</h1><h2>verb</h2><ul><li>to like</li></ul>",
+      "id":23426,
+      "pronounce":"",
+      "word":"yêu chuộng",
+      "word_types":[
+         "verb"
+      ]
+   },
+   {
+      "description":"noun: dear",
+      "html":"<h1>yêu dấu</h1><h2>noun</h2><ul><li>dear</li></ul>",
+      "id":23427,
+      "pronounce":"",
+      "word":"yêu dấu",
+      "word_types":[
+         "noun"
+      ]
+   },
+   {
+      "description":"adj: charming, graceful",
+      "html":"<h1>yêu kiều</h1><h2>adj</h2><ul><li>charming, graceful</li></ul>",
+      "id":23428,
+      "pronounce":"",
+      "word":"yêu kiều",
+      "word_types":[
+         "adj"
+      ]
+   },
+   {
+      "description":"noun: ghost",
+      "html":"<h1>yêu ma</h1><h2>noun</h2><ul><li>ghost</li></ul>",
+      "id":23429,
+      "pronounce":"",
+      "word":"yêu ma",
+      "word_types":[
+         "noun"
+      ]
+   },
+   {
+      "description":"verb: to require",
+      "html":"<h1>yêu sách</h1><h2>verb</h2><ul><li>to require</li></ul>",
+      "id":23430,
+      "pronounce":"",
+      "word":"yêu sách",
+      "word_types":[
+         "verb"
+      ]
+   },
+   {
+      "description":"noun: sorcery",
+      "html":"<h1>yêu thuật</h1><h2>noun</h2><ul><li>sorcery</li></ul>",
+      "id":23431,
+      "pronounce":"",
+      "word":"yêu thuật",
+      "word_types":[
+         "noun"
+      ]
+   },
+   {
+      "description":"noun: evil, demon",
+      "html":"<h1>yêu tinh</h1><h2>noun</h2><ul><li>evil, demon</li></ul>",
+      "id":23432,
+      "pronounce":"",
+      "word":"yêu tinh",
+      "word_types":[
+         "noun"
+      ]
+   },
+   {
+      "description":"adj: short life, premature",
+      "html":"<h1>yểu</h1><h2>adj</h2><ul><li>short life, premature</li></ul>",
+      "id":23433,
+      "pronounce":"",
+      "word":"yểu",
+      "word_types":[
+         "adj"
+      ]
+   },
+   {
+      "description":"adj: graceful",
+      "html":"<h1>yểu điệu</h1><h2>adj</h2><ul><li>graceful</li></ul>",
+      "id":23434,
+      "pronounce":"",
+      "word":"yểu điệu",
+      "word_types":[
+         "adj"
+      ]
+   },
+   {
+      "description":"adj: weak, feeble",
+      "html":"<h1>yếu</h1><h2>adj</h2><ul><li>weak, feeble</li></ul>",
+      "id":23435,
+      "pronounce":"",
+      "word":"yếu",
+      "word_types":[
+         "adj"
+      ]
+   },
+   {
+      "description":"noun: the essential point",
+      "html":"<h1>yếu điểm</h1><h2>noun</h2><ul><li>the essential point</li></ul>",
+      "id":23436,
+      "pronounce":"",
+      "word":"yếu điểm",
+      "word_types":[
+         "noun"
+      ]
+   },
+   {
+      "description":"adj: weak, feeble",
+      "html":"<h1>yếu đuối</h1><h2>adj</h2><ul><li>weak, feeble</li></ul>",
+      "id":23437,
+      "pronounce":"",
+      "word":"yếu đuối",
+      "word_types":[
+         "adj"
+      ]
+   },
+   {
+      "description":"adj: elementary",
+      "html":"<h1>yếu lược</h1><h2>adj</h2><ul><li>elementary</li></ul>",
+      "id":23438,
+      "pronounce":"",
+      "word":"yếu lược",
+      "word_types":[
+         "adj"
+      ]
+   },
+   {
+      "description":"noun: very important person",
+      "html":"<h1>yếu nhân</h1><h2>noun</h2><ul><li>very important person</li></ul>",
+      "id":23439,
+      "pronounce":"",
+      "word":"yếu nhân",
+      "word_types":[
+         "noun"
+      ]
+   }
+]
