@@ -7,6 +7,7 @@ const filterDOM = document.querySelector("#filter");
 const searchFrameDOM = document.querySelector("#search-frame");
 const searchFormDOM = document.forms["search"];
 const searchTextDOM = document.querySelector("#search-text");
+const searchResultDOM = document.querySelector("#search-result");
 const addWordFrameDOM = document.querySelector("#add-word-frame");
 const softwareInfoDOM = document.querySelector("#software-info-frame");
 
@@ -74,7 +75,38 @@ const app = {
       ipcRenderer.send("search-value", e.target.value);
     });
   },
+
+  styleResult: function () {
+    const h1s = document.querySelectorAll("#search-result h1");
+    const h2s = document.querySelectorAll("#search-result h2");
+    const h3s = document.querySelectorAll("#search-result h3");
+    const uls = document.querySelectorAll("#search-result ul");
+    const ols = document.querySelectorAll("#search-result ol");
+    h1s.forEach(e => {
+      e.classList.add("font-bold", "text-xl", "p-6");
+    }) 
+    h2s.forEach(e => {
+      e.classList.add("px-6", "py-1");
+    }) 
+    h3s.forEach(e => {
+      e.classList.add("px-6", "py-1");
+    }) 
+    uls.forEach((e) => {
+      e.classList.add("px-6", "py-1", "list-disc", "list-inside");
+    });
+    ols.forEach((e) => {
+      e.classList.add("px-6", "py-1", "list-disc", "list-inside");
+    })
+  },
+
+  ipcListenResponse: function () {
+    ipcRenderer.on("search-value-result", (event, payload) => {
+      searchResultDOM.innerHTML = payload.html;
+      this.styleResult();
+    });
+  },
 };
 
 app.activeNavbar();
 app.listenSearchForm();
+app.ipcListenResponse();

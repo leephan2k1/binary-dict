@@ -80,11 +80,9 @@ app.on("ready", () => {
 //Lắng nghe search action
 ipcMain.on("search-value", (event, payload) => {
   const searchValue = payload.trim();
-  const resultNode = forestWords[0].search({ word: searchValue });
-  console.log(resultNode?.value);
-    // if(searchValue.length === 1){
-    //   searchNodeResult = Model.init('av', searchValue.charAt(0));
-    // }
-    // const resultNode = searchNodeResult.search({word: searchValue});
-    // console.log('>>>>>>>>>>>', resultNode?.value.description);
+  const idx = +searchValue.charCodeAt(0) - 97;
+  if(searchValue.length){
+    const resultNode = forestWords[idx].search({ word: searchValue });
+    mainWindow.webContents.send('search-value-result', resultNode?.value)
+  }
 });
