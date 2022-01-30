@@ -18,6 +18,10 @@ class BinarySearchTree {
     return this.root.remove(value);
   }
 
+  search(value){
+    return this.root.find(value);
+  }
+
   toString() {
     return this.root.toString();
   }
