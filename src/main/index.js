@@ -27,15 +27,16 @@
 //                   A DI ĐÀ PHẬT!                     //
 //                                                     //
 /////////////////////////////////////////////////////////
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
+const Model = require("./electron/model.js");
 require("electron-reload")(path.join(__dirname, "../renderer"));
 
 let mainWindow;
 
 const createWindow = () => {
   // Tạo Window mới với
-  mainWin = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 1000,
     minWidth: 850,
     maxWidth: 1000,
@@ -50,10 +51,10 @@ const createWindow = () => {
   });
 
   // Không cần menu (production)
-  // mainWin.removeMenu();
+  // mainWindow.removeMenu();
 
   // Tải file html và hiển thị
-  mainWin.loadURL("file:///src/renderer/index.html");
+  mainWindow.loadURL("file:///src/renderer/index.html");
 
   // mainWin.webContents.openDevTools();
 };
@@ -65,10 +66,25 @@ app.whenReady().then(() => {
   });
 });
 
-//Xử lý khi windows đóng
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") app.quit();
 });
 
-// Xử lý khi app ở trạng thái active, ví dụ click vào icon
-app.on("activate", () => {});
+const forestWords = [];
+app.on("ready", () => {
+  for (let i = 0; i < 26; i++) {
+    const tree = Model.init("av", (i + 10).toString(36));
+    forestWords.push(tree);
+  }
+});
+//Lắng nghe search action
+ipcMain.on("search-value", (event, payload) => {
+  const searchValue = payload.trim();
+  const resultNode = forestWords[0].search({ word: searchValue });
+  console.log(resultNode?.value);
+    // if(searchValue.length === 1){
+    //   searchNodeResult = Model.init('av', searchValue.charAt(0));
+    // }
+    // const resultNode = searchNodeResult.search({word: searchValue});
+    // console.log('>>>>>>>>>>>', resultNode?.value.description);
+});
