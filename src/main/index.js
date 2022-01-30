@@ -81,8 +81,10 @@ app.on("ready", () => {
 ipcMain.on("search-value", (event, payload) => {
   const searchValue = payload.trim();
   const idx = +searchValue.charCodeAt(0) - 97;
-  if(searchValue.length){
+
+  if (searchValue.length) {
     const resultNode = forestWords[idx].search({ word: searchValue });
-    mainWindow.webContents.send('search-value-result', resultNode?.value)
+    mainWindow.webContents.send("search-value-result", resultNode?.value);
   }
 });
+

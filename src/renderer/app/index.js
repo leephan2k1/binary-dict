@@ -10,6 +10,9 @@ const searchTextDOM = document.querySelector("#search-text");
 const searchResultDOM = document.querySelector("#search-result");
 const addWordFrameDOM = document.querySelector("#add-word-frame");
 const softwareInfoDOM = document.querySelector("#software-info-frame");
+const wordList = document.querySelector("#wordList__details");
+
+let currentFrame = -1;
 
 const app = {
   activeNavbar: function () {
@@ -36,31 +39,34 @@ const app = {
     menuItemsDOM.forEach((item, index) => {
       if (item.classList.contains("active")) {
         indexFrame = index;
+        currentFrame = index;
         return;
       }
     });
+
+    //active ui
     switch (indexFrame) {
       case 0:
         //display search + result search
         resultFrameDOM.classList.remove("hidden");
         searchFrameDOM.classList.remove("hidden", "h-[20%]");
         searchFrameDOM.classList.add("h-[30%]");
+        searchTextDOM.value = "";
         break;
-      case 1:
+      case 2:
       case 3:
-      case 4:
         //display search + filter + word list
         searchFrameDOM.classList.remove("hidden", "h-[30%]");
         searchFrameDOM.classList.add("h-[20%]");
-        searchTextDOM.value = "";
         filterDOM.classList.remove("hidden");
         wordListDOM.classList.remove("hidden");
+        searchTextDOM.value = "";
         break;
-      case 2:
+      case 1:
         //display add word form
         addWordFrameDOM.classList.remove("hidden");
         break;
-      case 5:
+      case 4:
         //display info frame
         softwareInfoDOM.classList.remove("hidden");
         break;
@@ -82,27 +88,29 @@ const app = {
     const h3s = document.querySelectorAll("#search-result h3");
     const uls = document.querySelectorAll("#search-result ul");
     const ols = document.querySelectorAll("#search-result ol");
-    h1s.forEach(e => {
+    h1s.forEach((e) => {
       e.classList.add("font-bold", "text-xl", "p-6");
-    }) 
-    h2s.forEach(e => {
+    });
+    h2s.forEach((e) => {
       e.classList.add("px-6", "py-1");
-    }) 
-    h3s.forEach(e => {
+    });
+    h3s.forEach((e) => {
       e.classList.add("px-6", "py-1");
-    }) 
+    });
     uls.forEach((e) => {
       e.classList.add("px-6", "py-1", "list-disc", "list-inside");
     });
     ols.forEach((e) => {
       e.classList.add("px-6", "py-1", "list-disc", "list-inside");
-    })
+    });
   },
 
   ipcListenResponse: function () {
     ipcRenderer.on("search-value-result", (event, payload) => {
-      searchResultDOM.innerHTML = payload.html;
-      this.styleResult();
+      if (currentFrame === 0) {
+        searchResultDOM.innerHTML = payload.html;
+        this.styleResult();
+      }
     });
   },
 };
