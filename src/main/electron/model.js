@@ -19,7 +19,7 @@ const readFile = (type, character) => {
     const words = JSON.parse(rawData);
     return words;
   } catch (err) {
-    console.log('>>>>', err);
+    console.log(">>>>", err);
   }
 };
 const fs = require("fs");
@@ -28,12 +28,15 @@ const path = require("path");
 const init = (type, character) => {
   const words = readFile(type, character);
   const tree = new BinarySearchTree(customComparator);
-  for (let y = Math.floor(words.length / 2); y < words.length; y++) {
-    tree.insert(words[y]);
+  //
+  tree.insert(words[Math.floor(words.length / 2)]);
+  let x = Math.floor(words.length / 2) - 1;
+  for (let y = Math.floor(words.length / 2) + 1; y < words.length; y++) {
+    if (words[x]) tree.insert(words[x]);
+    if (words[y]) tree.insert(words[y]);
+    x--;
   }
-  for (let x = 0; x < Math.floor(words.length / 2); x++) {
-    tree.insert(words[x]);
-  }
+
   return tree;
 };
 
