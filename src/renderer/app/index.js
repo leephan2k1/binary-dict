@@ -1,3 +1,5 @@
+const fs = require("fs");
+
 const menuItemsDOM = document.querySelectorAll(".menu-item");
 const framesDOM = document.querySelectorAll(".frame");
 
@@ -12,7 +14,9 @@ const addWordFrameDOM = document.querySelector("#add-word-frame");
 const softwareInfoDOM = document.querySelector("#software-info-frame");
 const wordList = document.querySelector("#wordList__details");
 
-let currentFrame = -1;
+const likeBtn = document.querySelector("#like");
+
+let currentFrame = 0;
 
 const app = {
   activeNavbar: function () {
@@ -78,7 +82,25 @@ const app = {
       e.preventDefault();
     });
     searchTextDOM.addEventListener("keyup", (e) => {
+      console.log("test");
       ipcRenderer.send("search-value", e.target.value);
+    });
+  },
+
+  listenLikeButton: function () {
+    likeBtn.addEventListener("click", (e) => {
+      const word = document.querySelector("#search-result h1").innerText;
+      const desc = document.querySelector("#search-result > ul > li").innerText;
+      console.log(word + " " + desc);
+      const obj = {
+        word,
+        desc,
+      };
+      try {
+        // fs.writeFileSync('../../main/resources/like/like.json', obj);
+      } catch (e) {
+        console.log(e);
+      }
     });
   },
 
@@ -89,13 +111,13 @@ const app = {
     const uls = document.querySelectorAll("#search-result ul");
     const ols = document.querySelectorAll("#search-result ol");
     h1s.forEach((e) => {
-      e.classList.add("font-bold", "text-xl", "p-6");
+      e.classList.add("font-bold", "text-xl", "py-2");
     });
     h2s.forEach((e) => {
-      e.classList.add("px-6", "py-1");
+      e.classList.add("py-1");
     });
     h3s.forEach((e) => {
-      e.classList.add("px-6", "py-1");
+      e.classList.add("py-1");
     });
     uls.forEach((e) => {
       e.classList.add("px-6", "py-1", "list-disc", "list-inside");
@@ -108,8 +130,10 @@ const app = {
   ipcListenResponse: function () {
     ipcRenderer.on("search-value-result", (event, payload) => {
       if (currentFrame === 0) {
-        searchResultDOM.innerHTML = payload.html;
-        this.styleResult();
+        if (payload.html) {
+          searchResultDOM.innerHTML = payload.html;
+          this.styleResult();
+        }
       }
     });
   },
@@ -117,4 +141,5 @@ const app = {
 
 app.activeNavbar();
 app.listenSearchForm();
+app.listenLikeButton();
 app.ipcListenResponse();
