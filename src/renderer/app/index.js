@@ -52,11 +52,11 @@ const app = {
     });
 
     if (currentFrame === 3) {
-      this.loadContentLikeList();
+      this.loadContent(likeList);
     }
 
     if (currentFrame === 2) {
-      wordList.innerHTML = null;
+      this.loadContent(recentlyList);
     }
 
     //active ui
@@ -100,9 +100,9 @@ const app = {
     }
   },
 
-  loadContentLikeList: function () {
+  loadContent: function (data) {
     wordList.innerHTML = null;
-    likeList.map((e) => {
+    data.map((e) => {
       wordList.innerHTML += `<li class="p-4 even:bg-gray-300">
         <span class="word-list">${e.word}</span>
         <svg
