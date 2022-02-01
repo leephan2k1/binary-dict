@@ -15,6 +15,7 @@ const addWordFrameDOM = document.querySelector("#add-word-frame");
 const softwareInfoDOM = document.querySelector("#software-info-frame");
 const wordList = document.querySelector("#wordList__details");
 const likeBtn = document.querySelector("#like");
+const sortFilter = document.querySelector("#filter-word-sort");
 
 let currentFrame = 0;
 let likeList = [];
@@ -206,7 +207,6 @@ const app = {
         desc,
       };
       const exist = likeList.find((e) => e.word === word);
-      console.log(exist);
       if (!exist) {
         likeList.push(obj);
         this.activeLikeButton(true);
@@ -215,6 +215,35 @@ const app = {
         this.activeLikeButton(false);
       }
       this.writeWordsToFile("like", likeList);
+    });
+  },
+
+  listenFilterSort: function () {
+    sortFilter.addEventListener("change", (e) => {
+      if (currentFrame === 2) {
+        if (e.target.value === "asc") {
+          this.loadContent(
+            recentlyList.sort((a, b) => (a.word < b.word ? -1 : 1))
+          );
+        }
+        if (e.target.value === "desc") {
+          this.loadContent(
+            recentlyList.sort((a, b) => (a.word > b.word ? -1 : 1))
+          );
+        }
+      }
+      if (currentFrame === 3) {
+        switch (e.target.value) {
+          case "asc":
+            likeList.sort((a, b) => (a.word < b.word ? -1 : 1));
+            break;
+          case "desc":
+            likeList.sort((a, b) => (a.word > b.word ? -1 : 1));
+            break;
+        }
+        console.log(likeList);
+        this.loadContent(likeList);
+      }
     });
   },
 
@@ -253,7 +282,7 @@ const app = {
           };
           this.styleResult();
         }
-        const exist = likeList.find((e) => e.word === payload.word);
+        const exist = likeList.find((e) => e.word === payload?.word);
         if (exist) this.activeLikeButton(true);
       }
     });
@@ -265,4 +294,5 @@ app.readJSONtoWords("recently");
 app.activeNavbar();
 app.listenSearchForm();
 app.listenLikeButton();
+app.listenFilterSort();
 app.ipcListenResponse();
