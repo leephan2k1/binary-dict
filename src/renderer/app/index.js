@@ -18,6 +18,8 @@ const likeBtn = document.querySelector("#like");
 
 let currentFrame = 0;
 let likeList = [];
+let recentlyList = [];
+let wordPayload = {};
 
 const app = {
   activeNavbar: function () {
@@ -49,11 +51,11 @@ const app = {
       }
     });
 
-    if(currentFrame === 3){
+    if (currentFrame === 3) {
       this.loadContentLikeList();
     }
 
-    if(currentFrame === 2){
+    if (currentFrame === 2) {
       wordList.innerHTML = null;
     }
 
@@ -100,8 +102,8 @@ const app = {
 
   loadContentLikeList: function () {
     wordList.innerHTML = null;
-      likeList.map((e) => {
-        wordList.innerHTML += `<li class="p-4 even:bg-gray-300">
+    likeList.map((e) => {
+      wordList.innerHTML += `<li class="p-4 even:bg-gray-300">
         <span class="word-list">${e.word}</span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -119,20 +121,36 @@ const app = {
         </svg>
         <span class="word-description">${e.desc}</span>
       </li>`;
-      });
+    });
   },
 
   listenSearchForm: function () {
+    let debounceTime;
     searchFormDOM.addEventListener("submit", (e) => {
       e.preventDefault();
     });
     searchTextDOM.addEventListener("keyup", (e) => {
-      console.log("test");
       ipcRenderer.send("search-value", e.target.value);
+
+      if (debounceTime) {
+        clearTimeout(debounceTime);
+      }
+      debounceTime = setTimeout(() => {
+        if (e.target.value === wordPayload.word) {
+          const exist = recentlyList.find((e) => e.word === wordPayload.word);
+          if (!exist) {
+            recentlyList.push({
+              word: wordPayload.word,
+              desc: wordPayload.desc,
+            });
+            this.writeWordsToFile("recently", recentlyList);
+          }
+        }
+      }, 500);
     });
   },
 
-  writeFileLikedWord: function (obj) {
+  writeWordsToFile: function (fileName, obj) {
     try {
       fs.writeFileSync(
         path.join(
@@ -142,8 +160,8 @@ const app = {
           "src",
           "main",
           "resources",
-          "like",
-          "like.json"
+          fileName,
+          `${fileName}.json`
         ),
         JSON.stringify(obj)
       );
@@ -152,7 +170,7 @@ const app = {
     }
   },
 
-  readFileLikedWord: function () {
+  readJSONtoWords: function (fileName) {
     try {
       const rawData = fs.readFileSync(
         path.join(
@@ -162,13 +180,20 @@ const app = {
           "src",
           "main",
           "resources",
-          "like",
-          "like.json"
+          fileName,
+          `${fileName}.json`
         )
       );
-      likeList = JSON.parse(rawData);
+      switch (fileName) {
+        case "like":
+          likeList = JSON.parse(rawData);
+          break;
+        case "recently":
+          recentlyList = JSON.parse(rawData);
+          break;
+      }
     } catch (e) {
-      this.writeFileLikedWord([]);
+      this.writeWordsToFile(fileName, []);
     }
   },
 
@@ -189,7 +214,7 @@ const app = {
         likeList = likeList.filter((e) => e.word !== word);
         this.activeLikeButton(false);
       }
-      this.writeFileLikedWord(likeList);
+      this.writeWordsToFile("like", likeList);
     });
   },
 
@@ -220,8 +245,12 @@ const app = {
     ipcRenderer.on("search-value-result", (event, payload) => {
       if (currentFrame === 0) {
         this.activeLikeButton(false);
-        if (payload.html) {
+        if (payload?.html) {
           searchResultDOM.innerHTML = payload.html;
+          wordPayload = {
+            word: payload.word,
+            desc: payload.description,
+          };
           this.styleResult();
         }
         const exist = likeList.find((e) => e.word === payload.word);
@@ -231,7 +260,8 @@ const app = {
   },
 };
 
-app.readFileLikedWord();
+app.readJSONtoWords("like");
+app.readJSONtoWords("recently");
 app.activeNavbar();
 app.listenSearchForm();
 app.listenLikeButton();
