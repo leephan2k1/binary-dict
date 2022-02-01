@@ -30,6 +30,7 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 const Model = require("./electron/model.js");
+const writeWord = require("./electron/writeFile");
 require("electron-reload")(path.join(__dirname, "../renderer"));
 
 let mainWindow;
@@ -87,4 +88,12 @@ ipcMain.on("search-value", (event, payload) => {
     mainWindow.webContents.send("search-value-result", resultNode?.value);
   }
 });
-
+//Lắng nghe add word
+ipcMain.on("add-word", (event, payload) => {
+  const idx = +payload?.word.charCodeAt(0) - 97;
+  const exist = forestWords[idx].search({ word: payload.word });
+  if (!exist) {
+    forestWords[idx].insert(payload);
+    writeWord("av", payload.word.charAt(0), payload);
+  }
+});

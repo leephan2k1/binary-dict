@@ -299,9 +299,7 @@
           id="wordList"
           class="frame hidden w-[80%] h-[60%] border-2 border-gray-300 rounded-2xl overflow-x-hidden shadow-2xl flex flex-col scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100"
         >
-          <ul id="wordList__details">
-           
-          </ul>
+          <ul id="wordList__details"></ul>
         </div>
 
         <!-- add word -->
@@ -309,12 +307,13 @@
           id="add-word-frame"
           class="frame hidden w-full h-full flex justify-center items-center"
         >
-          <form class="ml-4 w-[70%] h-[60%] flex flex-col">
+          <form id="add-word" class="ml-4 w-[70%] h-[60%] flex flex-col">
             <label for="word" class="font-semibold mt-3 w-[70%]"
               >Từ vựng <span class="text-red-500">*</span>
             </label>
             <input
               type="text"
+              name="word"
               placeholder="Nhập từ vựng (English)..."
               class="w-[70%] rounded-md p-2 border-2 border-gray-400"
             />
@@ -323,6 +322,7 @@
             </label>
             <input
               type="text"
+              name="meaning"
               placeholder="Nhập nghĩa (tiếng Việt)..."
               class="w-[70%] rounded-md p-2 border-2 border-gray-400"
             />
@@ -334,21 +334,22 @@
               id="word-type"
               class="w-[30%] h-9 rounded-md border-2 border-gray-400"
             >
-              <option value="noun">danh từ</option>
-              <option value="adj">tính từ</option>
-              <option value="verb">động từ</option>
-              <option value="adv">trạng từ</option>
-              <option value="pre">giới từ</option>
-              <option value="pro">đại từ</option>
-              <option value="con">liên từ</option>
-              <option value="int">thán từ</option>
-              <option value="sentence">câu</option>
+              <option value="danh từ">danh từ</option>
+              <option value="tính từ">tính từ</option>
+              <option value="động từ">động từ</option>
+              <option value="trạng từ">trạng từ</option>
+              <option value="giới từ">giới từ</option>
+              <option value="đại từ">đại từ</option>
+              <option value="liên từ">liên từ</option>
+              <option value="thán từ">thán từ</option>
+              <option value="câu">câu</option>
             </select>
             <label for="word" class="font-semibold mt-3 w-[70%]"
               >Nhập câu ví dụ
             </label>
             <input
               type="text"
+              name="example"
               placeholder="Nhập câu ví dụ (có thể bỏ qua)..."
               class="w-[70%] rounded-md p-2 border-2 border-gray-400"
             />

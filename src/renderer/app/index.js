@@ -1,3 +1,4 @@
+const { ipcRenderer } = require("electron/renderer");
 const fs = require("fs");
 const path = require("path");
 
@@ -16,6 +17,7 @@ const softwareInfoDOM = document.querySelector("#software-info-frame");
 const wordList = document.querySelector("#wordList__details");
 const likeBtn = document.querySelector("#like");
 const sortFilter = document.querySelector("#filter-word-sort");
+const addWordForm = document.querySelector("#add-word");
 
 let currentFrame = 0;
 let likeList = [];
@@ -226,6 +228,18 @@ const app = {
     });
   },
 
+  listenAddForm: function () {
+    addWordForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const objEV = {
+        description: `${addWordForm["word-type"].value}: ${addWordForm.meaning.value}`,
+        html: `<h1>${addWordForm.word.value}</h1><h2>${addWordForm["word-type"].value}</h2><ul><li>${addWordForm.meaning.value}</li><li>${addWordForm.example.value}</li></ul>`,
+        word: addWordForm.word.value,
+      };
+      ipcRenderer.send("add-word", objEV);
+    });
+  },
+
   listenLikeButton: function () {
     likeBtn.addEventListener("click", (e) => {
       const word = document.querySelector("#search-result h1").innerText;
@@ -320,6 +334,7 @@ app.readJSONtoWords("like");
 app.readJSONtoWords("recently");
 app.activeNavbar();
 app.listenSearchForm();
+app.listenAddForm();
 app.listenLikeButton();
 app.listenFilterSort();
 app.ipcListenResponse();
