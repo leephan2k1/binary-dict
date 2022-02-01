@@ -125,32 +125,6 @@ const app = {
     });
   },
 
-  listenSearchForm: function () {
-    let debounceTime;
-    searchFormDOM.addEventListener("submit", (e) => {
-      e.preventDefault();
-    });
-    searchTextDOM.addEventListener("keyup", (e) => {
-      ipcRenderer.send("search-value", e.target.value);
-
-      if (debounceTime) {
-        clearTimeout(debounceTime);
-      }
-      debounceTime = setTimeout(() => {
-        if (e.target.value === wordPayload.word) {
-          const exist = recentlyList.find((e) => e.word === wordPayload.word);
-          if (!exist) {
-            recentlyList.push({
-              word: wordPayload.word,
-              desc: wordPayload.desc,
-            });
-            this.writeWordsToFile("recently", recentlyList);
-          }
-        }
-      }, 500);
-    });
-  },
-
   writeWordsToFile: function (fileName, obj) {
     try {
       fs.writeFileSync(
@@ -198,6 +172,60 @@ const app = {
     }
   },
 
+  listenSearchForm: function () {
+    searchFormDOM.addEventListener("submit", (e) => {
+      e.preventDefault();
+    });
+
+    let debounceTime;
+    searchTextDOM.addEventListener("keyup", (e) => {
+      if (currentFrame === 0) {
+        ipcRenderer.send("search-value", e.target.value);
+        if (debounceTime) {
+          clearTimeout(debounceTime);
+        }
+        debounceTime = setTimeout(() => {
+          if (e.target.value === wordPayload.word) {
+            const exist = recentlyList.find((e) => e.word === wordPayload.word);
+            if (!exist) {
+              recentlyList.push({
+                word: wordPayload.word,
+                desc: wordPayload.desc,
+              });
+              this.writeWordsToFile("recently", recentlyList);
+            }
+          }
+        }, 500);
+      }
+      //recently frame
+      if (currentFrame === 2) {
+        if (e.target.value) {
+          const word = recentlyList.find(
+            (element) => element.word === e.target?.value
+          );
+          if (word) {
+            this.loadContent([word]);
+          }
+        } else {
+          this.loadContent(recentlyList);
+        }
+      }
+      //like frame
+      if (currentFrame === 3) {
+        if (e.target.value) {
+          const word = likeList.find(
+            (element) => element.word === e.target?.value
+          );
+          if (word) {
+            this.loadContent([word]);
+          }
+        } else {
+          this.loadContent(likeList);
+        }
+      }
+    });
+  },
+
   listenLikeButton: function () {
     likeBtn.addEventListener("click", (e) => {
       const word = document.querySelector("#search-result h1").innerText;
@@ -241,7 +269,6 @@ const app = {
             likeList.sort((a, b) => (a.word > b.word ? -1 : 1));
             break;
         }
-        console.log(likeList);
         this.loadContent(likeList);
       }
     });
