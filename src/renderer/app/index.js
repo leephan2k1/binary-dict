@@ -13,7 +13,7 @@ const searchTextDOM = document.querySelector("#search-text");
 const searchResultDOM = document.querySelector("#search-result");
 const addWordFrameDOM = document.querySelector("#add-word-frame");
 const softwareInfoDOM = document.querySelector("#software-info-frame");
-// const wordList = document.querySelector("#wordList__details");
+const wordList = document.querySelector("#wordList__details");
 const likeBtn = document.querySelector("#like");
 
 let currentFrame = 0;
@@ -48,6 +48,14 @@ const app = {
         return;
       }
     });
+
+    if(currentFrame === 3){
+      this.loadContentLikeList();
+    }
+
+    if(currentFrame === 2){
+      wordList.innerHTML = null;
+    }
 
     //active ui
     switch (indexFrame) {
@@ -88,6 +96,30 @@ const app = {
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
     </svg>`;
     }
+  },
+
+  loadContentLikeList: function () {
+    wordList.innerHTML = null;
+      likeList.map((e) => {
+        wordList.innerHTML += `<li class="p-4 even:bg-gray-300">
+        <span class="word-list">${e.word}</span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-4 w-4 inline-block"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
+          />
+        </svg>
+        <span class="word-description">${e.desc}</span>
+      </li>`;
+      });
   },
 
   listenSearchForm: function () {
@@ -187,12 +219,13 @@ const app = {
   ipcListenResponse: function () {
     ipcRenderer.on("search-value-result", (event, payload) => {
       if (currentFrame === 0) {
+        this.activeLikeButton(false);
         if (payload.html) {
           searchResultDOM.innerHTML = payload.html;
           this.styleResult();
         }
         const exist = likeList.find((e) => e.word === payload.word);
-        if(exist) this.activeLikeButton(true);
+        if (exist) this.activeLikeButton(true);
       }
     });
   },
