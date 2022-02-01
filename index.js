@@ -29,9 +29,9 @@
 /////////////////////////////////////////////////////////
 const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
-const Model = require("./electron/model.js");
-const writeWord = require("./electron/writeFile");
-require("electron-reload")(path.join(__dirname, "../renderer"));
+const Model = require("./src/main/electron/model");
+const writeWord = require("./src/main/electron/writeFile");
+// require("electron-reload")(path.join(__dirname, "../renderer"));
 
 let mainWindow;
 
@@ -47,15 +47,16 @@ const createWindow = () => {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
-      preload: path.join(__dirname, "../preload"),
+      preload: path.join(__dirname, "./src/preload"),
     },
   });
 
   // Không cần menu (production)
-  // mainWindow.removeMenu();
+  mainWindow.removeMenu();
 
   // Tải file html và hiển thị
-  mainWindow.loadURL("file:///src/renderer/index.html");
+  // mainWindow.loadURL("file:///src/renderer/index.html");
+  mainWindow.loadFile(path.join(__dirname, "src", "renderer", "index.html"));
 
   // mainWin.webContents.openDevTools();
 };
