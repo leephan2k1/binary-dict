@@ -1,4 +1,5 @@
 const fs = require("fs");
+const path = require("path");
 
 const menuItemsDOM = document.querySelectorAll(".menu-item");
 const framesDOM = document.querySelectorAll(".frame");
@@ -12,11 +13,11 @@ const searchTextDOM = document.querySelector("#search-text");
 const searchResultDOM = document.querySelector("#search-result");
 const addWordFrameDOM = document.querySelector("#add-word-frame");
 const softwareInfoDOM = document.querySelector("#software-info-frame");
-const wordList = document.querySelector("#wordList__details");
-
+// const wordList = document.querySelector("#wordList__details");
 const likeBtn = document.querySelector("#like");
 
 let currentFrame = 0;
+let likeList = [];
 
 const app = {
   activeNavbar: function () {
@@ -77,6 +78,18 @@ const app = {
     }
   },
 
+  activeLikeButton: function (bool) {
+    if (bool) {
+      likeBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-4 mt-2 cursor-pointer hover:text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+      </svg>`;
+    } else {
+      likeBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-4 mt-2 cursor-pointer hover:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+    </svg>`;
+    }
+  },
+
   listenSearchForm: function () {
     searchFormDOM.addEventListener("submit", (e) => {
       e.preventDefault();
@@ -87,20 +100,64 @@ const app = {
     });
   },
 
+  writeFileLikedWord: function (obj) {
+    try {
+      fs.writeFileSync(
+        path.join(
+          __dirname,
+          "../",
+          "../",
+          "src",
+          "main",
+          "resources",
+          "like",
+          "like.json"
+        ),
+        JSON.stringify(obj)
+      );
+    } catch (e) {
+      console.log(">>>", e);
+    }
+  },
+
+  readFileLikedWord: function () {
+    try {
+      const rawData = fs.readFileSync(
+        path.join(
+          __dirname,
+          "../",
+          "../",
+          "src",
+          "main",
+          "resources",
+          "like",
+          "like.json"
+        )
+      );
+      likeList = JSON.parse(rawData);
+    } catch (e) {
+      this.writeFileLikedWord([]);
+    }
+  },
+
   listenLikeButton: function () {
     likeBtn.addEventListener("click", (e) => {
       const word = document.querySelector("#search-result h1").innerText;
       const desc = document.querySelector("#search-result > ul > li").innerText;
-      console.log(word + " " + desc);
       const obj = {
         word,
         desc,
       };
-      try {
-        // fs.writeFileSync('../../main/resources/like/like.json', obj);
-      } catch (e) {
-        console.log(e);
+      const exist = likeList.find((e) => e.word === word);
+      console.log(exist);
+      if (!exist) {
+        likeList.push(obj);
+        this.activeLikeButton(true);
+      } else {
+        likeList = likeList.filter((e) => e.word !== word);
+        this.activeLikeButton(false);
       }
+      this.writeFileLikedWord(likeList);
     });
   },
 
@@ -134,11 +191,14 @@ const app = {
           searchResultDOM.innerHTML = payload.html;
           this.styleResult();
         }
+        const exist = likeList.find((e) => e.word === payload.word);
+        if(exist) this.activeLikeButton(true);
       }
     });
   },
 };
 
+app.readFileLikedWord();
 app.activeNavbar();
 app.listenSearchForm();
 app.listenLikeButton();
