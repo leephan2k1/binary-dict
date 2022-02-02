@@ -184,21 +184,21 @@ const app = {
     searchTextDOM.addEventListener("keyup", (e) => {
       if (currentFrame === 0) {
         ipcRenderer.send("search-value", e.target.value);
-        if (debounceTime) {
-          clearTimeout(debounceTime);
-        }
-        debounceTime = setTimeout(() => {
-          if (e.target.value === wordPayload.word) {
-            const exist = recentlyList.find((e) => e.word === wordPayload.word);
-            if (!exist) {
-              recentlyList.push({
-                word: wordPayload.word,
-                desc: wordPayload.desc,
-              });
-              this.writeWordsToFile("recently", recentlyList);
-            }
-          }
-        }, 500);
+        // if (debounceTime) {
+        //   clearTimeout(debounceTime);
+        // }
+        // debounceTime = setTimeout(() => {
+        //   if (e.target.value === wordPayload.word) {
+        //     const exist = recentlyList.find((e) => e.word === wordPayload.word);
+        //     if (!exist) {
+        //       recentlyList.push({
+        //         word: wordPayload.word,
+        //         desc: wordPayload.desc,
+        //       });
+        //       this.writeWordsToFile("recently", recentlyList);
+        //     }
+        //   }
+        // }, 500);
       }
       //recently frame
       if (currentFrame === 2) {
@@ -324,8 +324,8 @@ const app = {
           };
           this.styleResult();
         }
-        const exist = likeList.find((e) => e.word === payload?.word);
-        if (exist) this.activeLikeButton(true);
+        // const exist = likeList.find((e) => e.word === payload?.word);
+        // if (exist) this.activeLikeButton(true);
       }
     });
   },

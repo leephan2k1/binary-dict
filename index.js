@@ -30,6 +30,9 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 const Model = require("./src/main/electron/model");
+const storage = require("./src/main/electron/store");
+const search = require("./src/core/binarySearch");
+const comparator = require("./src/main/electron/constants");
 const writeWord = require("./src/main/electron/writeFile");
 // require("electron-reload")(path.join(__dirname, "../renderer"));
 
@@ -52,13 +55,11 @@ const createWindow = () => {
   });
 
   // Không cần menu (production)
-  mainWindow.removeMenu();
+  // mainWindow.removeMenu();
 
-  // Tải file html và hiển thị
-  // mainWindow.loadURL("file:///src/renderer/index.html");
   mainWindow.loadFile(path.join(__dirname, "src", "renderer", "index.html"));
 
-  // mainWin.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
 };
 
 app.whenReady().then(() => {
@@ -72,29 +73,40 @@ app.on("window-all-closed", () => {
   if (process.platform !== "darwin") app.quit();
 });
 
-const forestWords = [];
+const forestWordEV = [];
+const forestWordVE = [];
 app.on("ready", () => {
+  //EV
   for (let i = 0; i < 26; i++) {
-    const tree = Model.init("av", (i + 10).toString(36));
-    forestWords.push(tree);
+    forestWordEV.push(Model.init("av", (i + 10).toString(36)));
+  }
+  //VE
+  for (let i = 0; i < 26; i++) {
+    if(['f', 'w', 'j', 'z'].includes((i + 10).toString(36))){
+      continue;
+    }
+    forestWordVE.push(Model.init("av", (i + 10).toString(36)));
   }
 });
-//Lắng nghe search action
+
+// //Lắng nghe search action
 ipcMain.on("search-value", (event, payload) => {
   const searchValue = payload.trim();
   const idx = +searchValue.charCodeAt(0) - 97;
 
   if (searchValue.length) {
-    const resultNode = forestWords[idx].search({ word: searchValue });
-    mainWindow.webContents.send("search-value-result", resultNode?.value);
+    const words = forestWordEV[idx];
+    const resultNode = search(words, { word: searchValue }, comparator);
+    mainWindow.webContents.send("search-value-result", resultNode);
   }
 });
-//Lắng nghe add word
-ipcMain.on("add-word", (event, payload) => {
-  const idx = +payload?.word.charCodeAt(0) - 97;
-  const exist = forestWords[idx].search({ word: payload.word });
-  if (!exist) {
-    forestWords[idx].insert(payload);
-    writeWord("av", payload.word.charAt(0), payload);
-  }
-});
+
+// //Lắng nghe add word
+// ipcMain.on("add-word", (event, payload) => {
+//   const idx = +payload?.word.charCodeAt(0) - 97;
+//   const exist = forestWordEVs[idx].search({ word: payload.word });
+//   if (!exist) {
+//     forestWordEVs[idx].insert(payload);
+//     writeWord("av", payload.word.charAt(0), payload);
+//   }
+// });

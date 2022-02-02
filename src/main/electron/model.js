@@ -1,10 +1,6 @@
-const BinarySearchTree = require("../../core/BinarySearchTree.js");
-const customComparator = (objWordA, objWordB) => {
-  if (objWordA?.word === objWordB?.word) {
-    return 0;
-  }
-  return objWordA?.word < objWordB?.word ? -1 : 1;
-};
+const fs = require("fs");
+const path = require("path");
+
 const readFile = (type, character) => {
   try {
     const rawData = fs.readFileSync(
@@ -22,22 +18,10 @@ const readFile = (type, character) => {
     console.log(">>>>", err);
   }
 };
-const fs = require("fs");
-const path = require("path");
 
 const init = (type, character) => {
   const words = readFile(type, character);
-  const tree = new BinarySearchTree(customComparator);
-  //
-  tree.insert(words[Math.floor(words.length / 2)]);
-  let x = Math.floor(words.length / 2) - 1;
-  for (let y = Math.floor(words.length / 2) + 1; y < words.length; y++) {
-    if (words[x]) tree.insert(words[x]);
-    if (words[y]) tree.insert(words[y]);
-    x--;
-  }
-
-  return tree;
+  return words;
 };
 
 module.exports = {
