@@ -6,7 +6,7 @@
   "scripts": {
     "style": "tailwindcss -i ./src/styles/app.css -o ./src/renderer/styles.css --watch",
     "style-build": "tailwindcss -o ./src/renderer/styles.css --minify",
-    "start": "electron ./src/main"
+    "start": "electron ./"
   },
   "keywords": [],
   "author": "",
