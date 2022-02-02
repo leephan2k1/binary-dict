@@ -5,6 +5,7 @@ const path = require("path");
 const menuItemsDOM = document.querySelectorAll(".menu-item");
 const framesDOM = document.querySelectorAll(".frame");
 
+const intro = document.querySelector('#intro');
 const resultFrameDOM = document.querySelector("#result-frame");
 const wordListDOM = document.querySelector("#wordList");
 const filterDOM = document.querySelector("#filter");
@@ -18,6 +19,7 @@ const wordList = document.querySelector("#wordList__details");
 const likeBtn = document.querySelector("#like");
 const sortFilter = document.querySelector("#filter-word-sort");
 const addWordForm = document.querySelector("#add-word");
+const dictType = document.querySelector("#dict-type");
 
 let currentFrame = 0;
 let likeList = [];
@@ -66,7 +68,8 @@ const app = {
     switch (indexFrame) {
       case 0:
         //display search + result search
-        resultFrameDOM.classList.remove("hidden");
+        // resultFrameDOM.classList.remove("hidden");
+        intro.classList.remove("hidden");
         searchFrameDOM.classList.remove("hidden", "h-[20%]");
         searchFrameDOM.classList.add("h-[30%]");
         searchTextDOM.value = "";
@@ -183,6 +186,8 @@ const app = {
     let debounceTime;
     searchTextDOM.addEventListener("keyup", (e) => {
       if (currentFrame === 0) {
+        intro.classList.add("hidden");
+        resultFrameDOM.classList.remove("hidden");
         ipcRenderer.send("search-value", e.target.value);
         // if (debounceTime) {
         //   clearTimeout(debounceTime);

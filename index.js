@@ -34,7 +34,7 @@ const storage = require("./src/main/electron/store");
 const search = require("./src/core/binarySearch");
 const comparator = require("./src/main/electron/constants");
 const writeWord = require("./src/main/electron/writeFile");
-// require("electron-reload")(path.join(__dirname, "../renderer"));
+require("electron-reload")(path.join(__dirname, "./src/renderer/index.html"));
 
 let mainWindow;
 
