@@ -45,7 +45,7 @@ const createWindow = () => {
     minWidth: 850,
     maxWidth: 1000,
     height: 750,
-    minHeight: 650,
+    minHeight: 700,
     maxHeight: 750,
     webPreferences: {
       nodeIntegration: true,
@@ -55,7 +55,7 @@ const createWindow = () => {
   });
 
   // Không cần menu (production)
-  // mainWindow.removeMenu();
+  mainWindow.removeMenu();
 
   mainWindow.loadFile(path.join(__dirname, "src", "renderer", "index.html"));
 
