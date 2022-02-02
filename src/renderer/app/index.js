@@ -56,11 +56,11 @@ const app = {
       }
     });
 
-    if (currentFrame === 3) {
+    if (currentFrame === 4) {
       this.loadContent(likeList);
     }
 
-    if (currentFrame === 2) {
+    if (currentFrame === 3) {
       this.loadContent(recentlyList);
     }
 
@@ -189,24 +189,24 @@ const app = {
         intro.classList.add("hidden");
         resultFrameDOM.classList.remove("hidden");
         ipcRenderer.send("search-value", e.target.value);
-        // if (debounceTime) {
-        //   clearTimeout(debounceTime);
-        // }
-        // debounceTime = setTimeout(() => {
-        //   if (e.target.value === wordPayload.word) {
-        //     const exist = recentlyList.find((e) => e.word === wordPayload.word);
-        //     if (!exist) {
-        //       recentlyList.push({
-        //         word: wordPayload.word,
-        //         desc: wordPayload.desc,
-        //       });
-        //       this.writeWordsToFile("recently", recentlyList);
-        //     }
-        //   }
-        // }, 500);
+        if (debounceTime) {
+          clearTimeout(debounceTime);
+        }
+        debounceTime = setTimeout(() => {
+          if (e.target.value === wordPayload.word) {
+            const exist = recentlyList.find((e) => e.word === wordPayload.word);
+            if (!exist) {
+              recentlyList.push({
+                word: wordPayload.word,
+                desc: wordPayload.desc,
+              });
+              this.writeWordsToFile("recently", recentlyList);
+            }
+          }
+        }, 500);
       }
       //recently frame
-      if (currentFrame === 2) {
+      if (currentFrame === 3) {
         if (e.target.value) {
           const word = recentlyList.find(
             (element) => element.word === e.target?.value
@@ -219,7 +219,7 @@ const app = {
         }
       }
       //like frame
-      if (currentFrame === 3) {
+      if (currentFrame === 4) {
         if (e.target.value) {
           const word = likeList.find(
             (element) => element.word === e.target?.value
