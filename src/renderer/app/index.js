@@ -5,7 +5,7 @@ const path = require("path");
 const menuItemsDOM = document.querySelectorAll(".menu-item");
 const framesDOM = document.querySelectorAll(".frame");
 
-const intro = document.querySelector('#intro');
+const intro = document.querySelector("#intro");
 const resultFrameDOM = document.querySelector("#result-frame");
 const wordListDOM = document.querySelector("#wordList");
 const filterDOM = document.querySelector("#filter");
@@ -19,7 +19,7 @@ const wordList = document.querySelector("#wordList__details");
 const likeBtn = document.querySelector("#like");
 const sortFilter = document.querySelector("#filter-word-sort");
 const addWordForm = document.querySelector("#add-word");
-const dictType = document.querySelector("#dict-type");
+const transType = document.querySelector("#dict-type");
 
 let currentFrame = 0;
 let likeList = [];
@@ -294,6 +294,13 @@ const app = {
     });
   },
 
+  listenTransType: function () {
+    transType.addEventListener("change", (e) => {
+      ipcRenderer.send("trans-type", e.target.value);
+      console.log(e.target.value);
+    });
+  },
+
   styleResult: function () {
     const h1s = document.querySelectorAll("#search-result h1");
     const h2s = document.querySelectorAll("#search-result h2");
@@ -339,8 +346,11 @@ const app = {
 app.readJSONtoWords("like");
 app.readJSONtoWords("recently");
 app.activeNavbar();
+
 app.listenSearchForm();
 app.listenAddForm();
 app.listenLikeButton();
 app.listenFilterSort();
+app.listenTransType();
+
 app.ipcListenResponse();

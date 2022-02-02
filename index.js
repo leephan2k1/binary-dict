@@ -75,6 +75,7 @@ app.on("window-all-closed", () => {
 
 const forestWordEV = [];
 const forestWordVE = [];
+let wordsRef;
 app.on("ready", () => {
   //EV
   for (let i = 0; i < 26; i++) {
@@ -82,20 +83,32 @@ app.on("ready", () => {
   }
   //VE
   for (let i = 0; i < 26; i++) {
-    if(['f', 'w', 'j', 'z'].includes((i + 10).toString(36))){
+    if (["f", "w", "j", "z"].includes((i + 10).toString(36))) {
       continue;
     }
-    forestWordVE.push(Model.init("av", (i + 10).toString(36)));
+    forestWordVE.push(Model.init("va", (i + 10).toString(36)));
+  }
+  //default: EV
+  wordsRef = forestWordEV;
+});
+
+// listen search type (ev - ve)
+ipcMain.on("trans-type", (event, payload) => {
+  if (payload === "ev") {
+    wordsRef = forestWordEV;
+  }
+  if (payload === "ve") {
+    wordsRef = forestWordVE;
   }
 });
 
-// //Lắng nghe search action
+// listen search action
 ipcMain.on("search-value", (event, payload) => {
   const searchValue = payload.trim();
   const idx = +searchValue.charCodeAt(0) - 97;
 
   if (searchValue.length) {
-    const words = forestWordEV[idx];
+    const words = wordsRef[idx];
     const resultNode = search(words, { word: searchValue }, comparator);
     mainWindow.webContents.send("search-value-result", resultNode);
   }
