@@ -252,7 +252,7 @@
           <select
             name="filter-word"
             id="filter-word-type"
-            class="p-1 border-2 border-gray-500 rounded-md focus:outline-none ml-6"
+            class="p-1 border-2 border-gray-500 rounded-md focus:outline-none mr-5"
           >
             <option value="" disabled selected hidden>Loại từ</option>
             <option value="all">Tất cả</option>
@@ -265,10 +265,50 @@
             <option value="con">liên từ</option>
             <option value="int">thán từ</option>
           </select>
+
+          <div id="pagination" class="w-32 flex justify-around">
+            <svg
+              id="pagination-prev"
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6 hover:scale-[110%] cursor-pointer"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+            <input
+              id='pagination-number'
+              class="w-[50%] border-2 border-gray-300 rounded-lg"
+              type="number"
+              min="0"
+            />
+            <svg
+              id="pagination-next"
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6 hover:scale-[110%] cursor-pointer"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </div>
+
           <select
             name="filter-word"
             id="filter-word-sort"
-            class="p-1 border-2 border-gray-500 rounded-md focus:outline-none ml-6"
+            class="p-1 border-2 border-gray-500 rounded-md focus:outline-none ml-5"
           >
             <option value="" disabled selected hidden>Sắp xếp</option>
             <option value="all">Tất cả</option>
@@ -276,6 +316,7 @@
             <option value="desc">z - a</option>
           </select>
         </div>
+
         <!-- list result -->
         <div
           id="wordList"

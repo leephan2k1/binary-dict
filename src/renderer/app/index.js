@@ -8,6 +8,8 @@ const framesDOM = document.querySelectorAll(".frame");
 const intro = document.querySelector("#intro");
 const resultFrameDOM = document.querySelector("#result-frame");
 const wordListDOM = document.querySelector("#wordList");
+const prevPagination = document.querySelector("#pagination-prev");
+const nextPagination = document.querySelector("#pagination-next");
 const filterDOM = document.querySelector("#filter");
 const searchFrameDOM = document.querySelector("#search-frame");
 const searchFormDOM = document.forms["search"];
@@ -24,7 +26,10 @@ const transType = document.querySelector("#dict-type");
 let currentFrame = 0;
 let likeList = [];
 let recentlyList = [];
+let wordsList = [];
 let wordPayload = {};
+//pagination
+let limit = 20;
 
 const app = {
   activeNavbar: function () {
@@ -62,6 +67,22 @@ const app = {
 
     if (currentFrame === 3) {
       this.loadContent(recentlyList);
+    }
+
+    if (currentFrame === 1) {
+      wordList.innerHTML = null;
+      //pagination reset
+      limit = 20;
+      ipcRenderer.send("get-list", {
+        request: true,
+      });
+      ipcRenderer.on("get-list-result", (event, payload) => {
+        wordsList = payload;
+        console.log(limit);
+        console.log(wordsList.slice(limit - 20, limit));
+        this.loadContent(wordsList.slice(limit - 20, limit));
+        limit += 20;
+      });
     }
 
     //active ui
@@ -126,7 +147,7 @@ const app = {
             d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
           />
         </svg>
-        <span class="word-description">${e.desc}</span>
+        <span class="word-description">${e.desc || e.description}</span>
       </li>`;
     });
   },
@@ -268,7 +289,7 @@ const app = {
 
   listenFilterSort: function () {
     sortFilter.addEventListener("change", (e) => {
-      if (currentFrame === 2) {
+      if (currentFrame === 3) {
         if (e.target.value === "asc") {
           this.loadContent(
             recentlyList.sort((a, b) => (a.word < b.word ? -1 : 1))
@@ -280,7 +301,7 @@ const app = {
           );
         }
       }
-      if (currentFrame === 3) {
+      if (currentFrame === 4) {
         switch (e.target.value) {
           case "asc":
             likeList.sort((a, b) => (a.word < b.word ? -1 : 1));
@@ -298,6 +319,24 @@ const app = {
     transType.addEventListener("change", (e) => {
       ipcRenderer.send("trans-type", e.target.value);
       console.log(e.target.value);
+    });
+  },
+
+  listenPaginate: function () {
+    nextPagination.addEventListener("click", () => {
+      limit += 20;
+      //list words frame
+      if (currentFrame === 1) {
+        console.log(wordsList.slice(limit-20, limit));
+        this.loadContent(wordsList.slice(limit-20, limit));
+      }
+    });
+    prevPagination.addEventListener("click", () => {
+      if (limit > 20) limit -= 20;
+      //list words frame
+      if (currentFrame === 1) {
+        this.loadContent(wordsList.slice(limit-20, limit));
+      }
     });
   },
 
@@ -352,5 +391,6 @@ app.listenAddForm();
 app.listenLikeButton();
 app.listenFilterSort();
 app.listenTransType();
+app.listenPaginate();
 
 app.ipcListenResponse();

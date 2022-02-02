@@ -528,12 +528,28 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-top: 1rem;
 }
 
+.mt-5{
+  margin-top: 1.25rem;
+}
+
 .mb-4{
   margin-bottom: 1rem;
 }
 
-.mt-5{
-  margin-top: 1.25rem;
+.mr-10{
+  margin-right: 2.5rem;
+}
+
+.ml-10{
+  margin-left: 2.5rem;
+}
+
+.mr-5{
+  margin-right: 1.25rem;
+}
+
+.ml-5{
+  margin-left: 1.25rem;
 }
 
 .inline-block{
@@ -600,12 +616,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   height: 1rem;
 }
 
-.h-fit{
-  height: -webkit-fit-content;
-  height: -moz-fit-content;
-  height: fit-content;
-}
-
 .w-full{
   width: 100%;
 }
@@ -630,6 +640,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   width: 80%;
 }
 
+.w-10{
+  width: 2.5rem;
+}
+
 .w-\[70\%\]{
   width: 70%;
 }
@@ -640,6 +654,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .w-4{
   width: 1rem;
+}
+
+.w-32{
+  width: 8rem;
 }
 
 .cursor-pointer{
@@ -677,6 +695,18 @@ Ensure the default browser behavior of the `hidden` attribute.
   justify-content: center;
 }
 
+.justify-between{
+  justify-content: space-between;
+}
+
+.justify-around{
+  justify-content: space-around;
+}
+
+.justify-evenly{
+  justify-content: space-evenly;
+}
+
 .overflow-hidden{
   overflow: hidden;
 }
@@ -695,6 +725,18 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .rounded-2xl{
   border-radius: 1rem;
+}
+
+.rounded-xl{
+  border-radius: 0.75rem;
+}
+
+.rounded-sm{
+  border-radius: 0.125rem;
+}
+
+.rounded-lg{
+  border-radius: 0.5rem;
 }
 
 .border-2{
@@ -758,9 +800,9 @@ Ensure the default browser behavior of the `hidden` attribute.
   padding-right: 1.5rem;
 }
 
-.py-7{
-  padding-top: 1.75rem;
-  padding-bottom: 1.75rem;
+.py-5{
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
 }
 
 .py-2{
@@ -773,21 +815,25 @@ Ensure the default browser behavior of the `hidden` attribute.
   padding-bottom: 0.25rem;
 }
 
-.py-5{
-  padding-top: 1.25rem;
-  padding-bottom: 1.25rem;
-}
-
-.pt-7{
-  padding-top: 1.75rem;
-}
-
-.pb-10{
-  padding-bottom: 2.5rem;
+.px-2{
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
 }
 
 .pb-5{
   padding-bottom: 1.25rem;
+}
+
+.pr-4{
+  padding-right: 1rem;
+}
+
+.pr-8{
+  padding-right: 2rem;
+}
+
+.pl-8{
+  padding-left: 2rem;
 }
 
 .text-center{
@@ -964,6 +1010,12 @@ Ensure the default browser behavior of the `hidden` attribute.
 .hover\:scale-\[110\%\]:hover{
   --tw-scale-x: 110%;
   --tw-scale-y: 110%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.hover\:scale-\[120\%\]:hover{
+  --tw-scale-x: 120%;
+  --tw-scale-y: 120%;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 

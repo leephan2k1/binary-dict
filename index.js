@@ -114,6 +114,13 @@ ipcMain.on("search-value", (event, payload) => {
   }
 });
 
+//listen get list
+ipcMain.on("get-list", (event, payload) => {
+  if (payload.request) {
+    mainWindow.webContents.send("get-list-result", wordsRef[0]);
+  }
+});
+
 // //Lắng nghe add word
 // ipcMain.on("add-word", (event, payload) => {
 //   const idx = +payload?.word.charCodeAt(0) - 97;
