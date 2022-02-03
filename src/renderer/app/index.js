@@ -1,4 +1,4 @@
-// const { ipcRenderer } = require("electron/renderer");
+const shell = require("electron").shell;
 const fs = require("fs");
 const path = require("path");
 
@@ -6,6 +6,7 @@ const menuItemsDOM = document.querySelectorAll(".menu-item");
 const framesDOM = document.querySelectorAll(".frame");
 
 const intro = document.querySelector("#intro");
+const facebookContact = document.querySelector(".contact");
 const resultFrameDOM = document.querySelector("#result-frame");
 const wordListDOM = document.querySelector("#wordList");
 
@@ -231,6 +232,7 @@ const app = {
               recentlyList.push({
                 word: wordPayload.word,
                 desc: wordPayload.desc,
+                word_types: wordPayload.word_types,
               });
               this.writeWordsToFile("recently", recentlyList);
             }
@@ -280,11 +282,11 @@ const app = {
 
   listenLikeButton: function () {
     likeBtn.addEventListener("click", (e) => {
-      const word = document.querySelector("#search-result h1").innerText;
-      const desc = document.querySelector("#search-result > ul > li").innerText;
+      const { word, desc, word_types } = wordPayload;
       const obj = {
         word,
         desc,
+        word_types,
       };
       const exist = likeList.find((e) => e.word === word);
       if (!exist) {
@@ -302,42 +304,37 @@ const app = {
     sortFilter.addEventListener("change", (e) => {
       if (currentFrame === 3) {
         if (e.target.value === "asc") {
-          recentlyList.sort((a, b) => (a.word < b.word ? -1 : 1))
-          // this.loadContent(
-          //   recentlyList
-          //     .slice(page * 20 - 20, page * 20)
-          //     .sort((a, b) => (a.word < b.word ? -1 : 1))
-          // );
+          recentlyList.sort((a, b) => (a.word < b.word ? -1 : 1));
+          this.handleContentPagination();
         }
         if (e.target.value === "desc") {
-          recentlyList.sort((a, b) => (a.word > b.word ? -1 : 1))
-          // this.loadContent(
-          //   recentlyList
-          //     .slice(page * 20 - 20, page * 20)
-          //     .sort((a, b) => (a.word > b.word ? -1 : 1))
-          // );
+          recentlyList.sort((a, b) => (a.word > b.word ? -1 : 1));
+          this.handleContentPagination();
         }
       }
       if (currentFrame === 4) {
         switch (e.target.value) {
           case "asc":
-            this.loadContent(
-              likeList
-                .slice(page * 20 - 20, page * 20)
-                .sort((a, b) => (a.word < b.word ? -1 : 1))
-            );
+            likeList.sort((a, b) => (a.word < b.word ? -1 : 1));
+            this.handleContentPagination();
             break;
           case "desc":
-            this.loadContent(
-              likeList
-                .slice(page * 20 - 20, page * 20)
-                .sort((a, b) => (a.word > b.word ? -1 : 1))
-            );
+            likeList.sort((a, b) => (a.word > b.word ? -1 : 1));
+            this.handleContentPagination();
             break;
         }
       }
-      if(currentFrame === 1){
-
+      if (currentFrame === 1) {
+        switch (e.target.value) {
+          case "asc":
+            wordsList.sort((a, b) => (a.word < b.word ? -1 : 1));
+            this.handleContentPagination();
+            break;
+          case "desc":
+            wordsList.sort((a, b) => (a.word > b.word ? -1 : 1));
+            this.handleContentPagination();
+            break;
+        }
       }
     });
   },
@@ -430,6 +427,18 @@ const app = {
         );
         this.loadContent(cloneWordsList.slice(page * 20 - 20, page * 20));
         break;
+      case 3:
+        const cloneRecentlyList = recentlyList.filter((e) =>
+          e.word_types.includes(wordType)
+        );
+        this.loadContent(cloneRecentlyList.slice(page * 20 - 20, page * 20));
+        break;
+      case 4:
+        const cloneLikeList = likeList.filter((e) =>
+          e.word_types.includes(wordType)
+        );
+        this.loadContent(cloneLikeList.slice(page * 20 - 20, page * 20));
+        break;
     }
   },
 
@@ -488,12 +497,20 @@ const app = {
           wordPayload = {
             word: payload.word,
             desc: payload.description,
+            word_types: payload.word_types,
           };
           this.styleResult();
         }
         // const exist = likeList.find((e) => e.word === payload?.word);
         // if (exist) this.activeLikeButton(true);
       }
+    });
+  },
+
+  listenContact: function () {
+    facebookContact.addEventListener("click", (e) => {
+      e.preventDefault();
+      shell.openExternal(facebookContact.href);
     });
   },
 };
@@ -510,5 +527,6 @@ app.listenTransType();
 app.listenPaginate();
 app.listenWordTypeFilter();
 app.listenInputPagination();
+app.listenContact();
 
 app.ipcListenResponse();
