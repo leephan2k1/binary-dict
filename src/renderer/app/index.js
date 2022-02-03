@@ -267,7 +267,6 @@ const app = {
   },
 
   validateAddForm: function () {
-    console.log(addWordForm.meaning?.value?.length);
     if (
       addWordForm["word-type"].value?.length === 0 ||
       addWordForm.meaning?.value?.length === 0 ||

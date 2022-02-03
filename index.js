@@ -30,7 +30,6 @@
 const { app, BrowserWindow, ipcMain, dialog } = require("electron");
 const path = require("path");
 const Model = require("./src/main/electron/model");
-const storage = require("./src/main/electron/store");
 const search = require("./src/core/binarySearch");
 const comparator = require("./src/main/electron/constants");
 const writeWord = require("./src/main/electron/writeFile");
@@ -73,8 +72,8 @@ app.on("window-all-closed", () => {
   if (process.platform !== "darwin") app.quit();
 });
 
-const forestWordEV = [];
-const forestWordVE = [];
+let forestWordEV = [];
+let forestWordVE = [];
 let wordsRef;
 app.on("ready", () => {
   //EV
@@ -111,8 +110,8 @@ ipcMain.on("search-value", (event, payload) => {
   if (searchValue.length) {
     const words = wordsRef[idx];
     if (words && words.length) {
-      const resultNode = search(words, { word: searchValue }, comparator);
-      mainWindow.webContents.send("search-value-result", resultNode);
+      const resultIndex = search(words, { word: searchValue }, comparator);
+      mainWindow.webContents.send("search-value-result", words[resultIndex]);
     }
   }
 });
@@ -126,15 +125,44 @@ ipcMain.on("get-list", (event, payload) => {
   }
 });
 
-// //Lắng nghe add word
+// add word
+function addWord(arr, idxEV, value) {
+  let index;
+  for (let i = 0; i < arr.length; i++) {
+    if (objEV.word < arr[i].word) {
+      index = i;
+      break;
+    }
+  }
+  const halfBefore = arr.slice(0, index + 1);
+  const halfRemain = arr.slice(index, arr.length);
+  halfBefore[index] = value;
+  forestWordEV[idxEV] = [...halfBefore, ...halfRemain];
+}
 ipcMain.on("add-word", (event, payload) => {
-  console.log(payload);
-  // const idx = +payload?.word.charCodeAt(0) - 97;
-  // const exist = forestWordEVs[idx].search({ word: payload.word });
-  // if (!exist) {
-  //   forestWordEVs[idx].insert(payload);
-  //   writeWord("av", payload.word.charAt(0), payload);
-  // }
+  const { objEV, objVE } = payload;
+  const idxEV = +objEV.word.charCodeAt(0) - 97;
+  const idxVE = +objVE.word.charCodeAt(0) - 97;
+  const existEV = search(forestWordEV[idxEV], { word: objEV.word }, comparator);
+  const evWords = forestWordEV[idxEV];
+  if (existEV === -1) {
+    addWord(evWords, idxEV, existEV);
+  } else {
+    const options = {
+      type: "warning",
+      buttons: ["Đồng ý", "Không"],
+      defaultId: 2,
+      title: " Từ đã tồn tại trong dữ liệu Anh - Việt!",
+      message: "Bạn có muốn ghi đè lại từ này?",
+      detail: "Việc ghi đè sẽ mất thông tin của từ cũ, chắc chắn chứ??",
+    };
+    const idxSelect = dialog.showMessageBoxSync(mainWindow, options);
+    if (idxSelect === 0) {
+      evWords[existEV] = objEV;
+      forestWordEV[idxEV] = evWords;
+      writeWord("av", objEV.word.charAt(0), forestWordEV[idxEV]);
+    }
+  }
 });
 
 ipcMain.on("error-add-word", () => {
@@ -142,7 +170,7 @@ ipcMain.on("error-add-word", () => {
     type: "error",
     buttons: ["ok"],
     defaultId: 1,
-    title: "CÓ GÌ ĐÓ KHUM ỔN?",
+    title: " CÓ GÌ ĐÓ KHUM ỔN?",
     message: "Thêm từ thất bại",
     detail: "Có lẽ bạn đã bỏ sót trường (*) nào đó, hãy kiểm tra lại",
   };

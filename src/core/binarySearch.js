@@ -12,7 +12,7 @@ const binarySearch = function (sortedArray, seekElement, comparatorCallback) {
     const middleIndex = startIndex + Math.floor((endIndex - startIndex) / 2);
 
     if (comparator.equal(sortedArray[middleIndex], seekElement)) {
-      return sortedArray[middleIndex];
+      return middleIndex;
     }
 
     if (comparator.lessThan(sortedArray[middleIndex], seekElement)) {
