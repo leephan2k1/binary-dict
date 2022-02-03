@@ -110,7 +110,7 @@ ipcMain.on("search-value", (event, payload) => {
 
   if (searchValue.length) {
     const words = wordsRef[idx];
-    if(words && words.length){
+    if (words && words.length) {
       const resultNode = search(words, { word: searchValue }, comparator);
       mainWindow.webContents.send("search-value-result", resultNode);
     }
@@ -119,17 +119,20 @@ ipcMain.on("search-value", (event, payload) => {
 
 //listen get list
 ipcMain.on("get-list", (event, payload) => {
+  const { character } = payload;
+  const idx = +character.charCodeAt(0) - 97;
   if (payload.request) {
-    mainWindow.webContents.send("get-list-result", wordsRef[0]);
+    mainWindow.webContents.send("get-list-result", wordsRef[idx]);
   }
 });
 
 // //Lắng nghe add word
-// ipcMain.on("add-word", (event, payload) => {
-//   const idx = +payload?.word.charCodeAt(0) - 97;
-//   const exist = forestWordEVs[idx].search({ word: payload.word });
-//   if (!exist) {
-//     forestWordEVs[idx].insert(payload);
-//     writeWord("av", payload.word.charAt(0), payload);
-//   }
-// });
+ipcMain.on("add-word", (event, payload) => {
+  console.log(payload);
+  // const idx = +payload?.word.charCodeAt(0) - 97;
+  // const exist = forestWordEVs[idx].search({ word: payload.word });
+  // if (!exist) {
+  //   forestWordEVs[idx].insert(payload);
+  //   writeWord("av", payload.word.charAt(0), payload);
+  // }
+});

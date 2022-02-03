@@ -42,6 +42,8 @@ let transTypeValue = "ev";
 let page;
 //word type filter
 let wordType = "all";
+//get list
+let character = "a";
 
 const app = {
   activeNavbar: function () {
@@ -89,15 +91,7 @@ const app = {
       wordList.innerHTML = null;
       //pagination reset
       page = 1;
-      //UI html
-      numberPagination.value = page;
-      ipcRenderer.send("get-list", {
-        request: true,
-      });
-      ipcRenderer.on("get-list-result", (event, payload) => {
-        wordsList = payload;
-        this.loadContent(wordsList.slice(0, 20));
-      });
+      this.ipcListenListResponse();
     }
 
     //active ui
@@ -275,12 +269,25 @@ const app = {
   listenAddForm: function () {
     addWordForm.addEventListener("submit", (e) => {
       e.preventDefault();
+      const wordTypeVie = this.helper.typeEngToVi(
+        addWordForm["word-type"].value
+      );
       const objEV = {
-        description: `${addWordForm["word-type"].value}: ${addWordForm.meaning.value}`,
-        html: `<h1>${addWordForm.word.value}</h1><h2>${addWordForm["word-type"].value}</h2><ul><li>${addWordForm.meaning.value}</li><li>${addWordForm.example.value}</li></ul>`,
+        description: `${wordTypeVie}: ${addWordForm.meaning?.value}`,
+        html: `<h1>${addWordForm.word?.value}</h1><h2>${wordTypeVie}</h2><ul><li>${addWordForm.meaning?.value}</li><li>${addWordForm.example?.value}</li></ul>`,
         word: addWordForm.word.value,
+        word_types: [wordTypeVie],
       };
-      ipcRenderer.send("add-word", objEV);
+      const objVE = {
+        description: `${addWordForm["word-type"].value}: ${addWordForm.word?.value}`,
+        html: `<h1>${addWordForm.meaning?.value}</h1><h2>${addWordForm["word-type"].value}</h2><ul><li>${addWordForm.word?.value}</li><li>${addWordForm.example?.value}</li></ul>`,
+        word: addWordForm.meaning?.value,
+        word_types: [addWordForm["word-type"].value],
+      };
+      ipcRenderer.send("add-word", {
+        objEV,
+        objVE,
+      });
     });
   },
 
@@ -396,7 +403,12 @@ const app = {
     });
   },
 
-  listenWordOrder: function () {},
+  listenWordOrder: function () {
+    wordOrderFilter.addEventListener("change", (e) => {
+      character = e.target.value;
+      this.ipcListenListResponse();
+    });
+  },
 
   listenInputPagination: function () {
     numberPagination.addEventListener("keyup", (e) => {
@@ -494,11 +506,10 @@ const app = {
     },
   },
 
-  ipcListenResponse: function () {
+  ipcListenSearchResponse: function () {
     ipcRenderer.on("search-value-result", (event, payload) => {
       if (currentFrame === 0) {
         this.activeLikeButton(false);
-        console.log(payload);
         if (payload?.html) {
           searchResultDOM.innerHTML = payload.html;
           wordPayload = {
@@ -508,10 +519,23 @@ const app = {
           };
           this.styleResult();
         }
-        // const exist = likeList.find((e) => e.word === payload?.word);
-        // if (exist) this.activeLikeButton(true);
+        const exist = likeList.find((e) => e.word === payload?.word);
+        if (exist) this.activeLikeButton(true);
       }
     });
+  },
+
+  ipcListenListResponse: function () {
+    ipcRenderer.send("get-list", {
+      request: true,
+      character,
+    });
+    ipcRenderer.on("get-list-result", (event, payload) => {
+      wordsList = payload;
+      this.loadContent(wordsList.slice(0, 20));
+    });
+    //UI
+    numberPagination.value = page;
   },
 
   listenContact: function () {
@@ -535,5 +559,6 @@ app.listenPaginate();
 app.listenWordTypeFilter();
 app.listenInputPagination();
 app.listenContact();
+app.listenWordOrder();
 
-app.ipcListenResponse();
+app.ipcListenSearchResponse();
