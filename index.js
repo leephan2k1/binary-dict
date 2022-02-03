@@ -27,7 +27,7 @@
 //                   A DI ĐÀ PHẬT!                     //
 //                                                     //
 /////////////////////////////////////////////////////////
-const { app, BrowserWindow, ipcMain } = require("electron");
+const { app, BrowserWindow, ipcMain, dialog } = require("electron");
 const path = require("path");
 const Model = require("./src/main/electron/model");
 const storage = require("./src/main/electron/store");
@@ -135,4 +135,16 @@ ipcMain.on("add-word", (event, payload) => {
   //   forestWordEVs[idx].insert(payload);
   //   writeWord("av", payload.word.charAt(0), payload);
   // }
+});
+
+ipcMain.on("error-add-word", () => {
+  const options = {
+    type: "error",
+    buttons: ["ok"],
+    defaultId: 1,
+    title: "CÓ GÌ ĐÓ KHUM ỔN?",
+    message: "Thêm từ thất bại",
+    detail: "Có lẽ bạn đã bỏ sót trường (*) nào đó, hãy kiểm tra lại",
+  };
+  dialog.showMessageBox(mainWindow, options);
 });

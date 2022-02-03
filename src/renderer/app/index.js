@@ -1,4 +1,4 @@
-const shell = require("electron").shell;
+const { shell } = require("electron");
 const fs = require("fs");
 const path = require("path");
 
@@ -266,28 +266,45 @@ const app = {
     });
   },
 
+  validateAddForm: function () {
+    console.log(addWordForm.meaning?.value?.length);
+    if (
+      addWordForm["word-type"].value?.length === 0 ||
+      addWordForm.meaning?.value?.length === 0 ||
+      addWordForm.word?.value?.length === 0
+    ) {
+      return false;
+    }
+    return true;
+  },
+
   listenAddForm: function () {
     addWordForm.addEventListener("submit", (e) => {
       e.preventDefault();
-      const wordTypeVie = this.helper.typeEngToVi(
-        addWordForm["word-type"].value
-      );
-      const objEV = {
-        description: `${wordTypeVie}: ${addWordForm.meaning?.value}`,
-        html: `<h1>${addWordForm.word?.value}</h1><h2>${wordTypeVie}</h2><ul><li>${addWordForm.meaning?.value}</li><li>${addWordForm.example?.value}</li></ul>`,
-        word: addWordForm.word.value,
-        word_types: [wordTypeVie],
-      };
-      const objVE = {
-        description: `${addWordForm["word-type"].value}: ${addWordForm.word?.value}`,
-        html: `<h1>${addWordForm.meaning?.value}</h1><h2>${addWordForm["word-type"].value}</h2><ul><li>${addWordForm.word?.value}</li><li>${addWordForm.example?.value}</li></ul>`,
-        word: addWordForm.meaning?.value,
-        word_types: [addWordForm["word-type"].value],
-      };
-      ipcRenderer.send("add-word", {
-        objEV,
-        objVE,
-      });
+
+      if (!this.validateAddForm()) {
+        ipcRenderer.send('error-add-word');
+      } else {
+        const wordTypeVie = this.helper.typeEngToVi(
+          addWordForm["word-type"].value
+        );
+        const objEV = {
+          description: `${wordTypeVie}: ${addWordForm.meaning?.value}`,
+          html: `<h1>${addWordForm.word?.value}</h1><h2>${wordTypeVie}</h2><ul><li>${addWordForm.meaning?.value}</li><li>${addWordForm.example?.value}</li></ul>`,
+          word: addWordForm.word.value,
+          word_types: [wordTypeVie],
+        };
+        const objVE = {
+          description: `${addWordForm["word-type"].value}: ${addWordForm.word?.value}`,
+          html: `<h1>${addWordForm.meaning?.value}</h1><h2>${addWordForm["word-type"].value}</h2><ul><li>${addWordForm.word?.value}</li><li>${addWordForm.example?.value}</li></ul>`,
+          word: addWordForm.meaning?.value,
+          word_types: [addWordForm["word-type"].value],
+        };
+        ipcRenderer.send("add-word", {
+          objEV,
+          objVE,
+        });
+      }
     });
   },
 
