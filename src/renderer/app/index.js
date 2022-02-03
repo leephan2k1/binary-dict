@@ -10,6 +10,7 @@ const resultFrameDOM = document.querySelector("#result-frame");
 const wordListDOM = document.querySelector("#wordList");
 const prevPagination = document.querySelector("#pagination-prev");
 const nextPagination = document.querySelector("#pagination-next");
+const numberPagination = document.querySelector("#pagination-number");
 const filterDOM = document.querySelector("#filter");
 const searchFrameDOM = document.querySelector("#search-frame");
 const searchFormDOM = document.forms["search"];
@@ -29,7 +30,7 @@ let recentlyList = [];
 let wordsList = [];
 let wordPayload = {};
 //pagination
-let limit = 20;
+let page;
 
 const app = {
   activeNavbar: function () {
@@ -66,22 +67,22 @@ const app = {
     }
 
     if (currentFrame === 3) {
-      this.loadContent(recentlyList);
+      page = 1;
+      numberPagination.value = page;
+      this.loadContent(recentlyList.slice(0, 20));
     }
 
     if (currentFrame === 1) {
       wordList.innerHTML = null;
       //pagination reset
-      limit = 20;
+      page = 1;
       ipcRenderer.send("get-list", {
         request: true,
       });
+      numberPagination.value = page;
       ipcRenderer.on("get-list-result", (event, payload) => {
         wordsList = payload;
-        console.log(limit);
-        console.log(wordsList.slice(limit - 20, limit));
-        this.loadContent(wordsList.slice(limit - 20, limit));
-        limit += 20;
+        this.loadContent(wordsList.slice(0, 20));
       });
     }
 
@@ -318,24 +319,57 @@ const app = {
   listenTransType: function () {
     transType.addEventListener("change", (e) => {
       ipcRenderer.send("trans-type", e.target.value);
-      console.log(e.target.value);
     });
+  },
+
+  handleContentPagination: function () {
+    switch (currentFrame) {
+      case 1:
+        this.loadContent(wordsList.slice(page * 20 - 20, page * 20));
+        break;
+      case 3:
+        this.loadContent(recentlyList.slice(page * 20 - 20, page * 20));
+        break;
+      case 4:
+        this.loadContent(likeList.slice(page * 20 - 20, page * 20));
+        break;
+    }
   },
 
   listenPaginate: function () {
     nextPagination.addEventListener("click", () => {
-      limit += 20;
-      //list words frame
-      if (currentFrame === 1) {
-        console.log(wordsList.slice(limit-20, limit));
-        this.loadContent(wordsList.slice(limit-20, limit));
+      //constraint
+      switch (currentFrame) {
+        case 1:
+          if (page * 20 < wordsList.length) page++;
+          break;
+        case 3:
+          if (page * 20 < recentlyList.length) page++;
+          break;
+        case 4:
+          if (page * 20 < likeList.length) page++;
+          break;
       }
+
+      this.handleContentPagination();
+
+      numberPagination.value = page;
     });
     prevPagination.addEventListener("click", () => {
-      if (limit > 20) limit -= 20;
-      //list words frame
-      if (currentFrame === 1) {
-        this.loadContent(wordsList.slice(limit-20, limit));
+      //constraint
+      if (page > 1) page--;
+
+      this.handleContentPagination();
+
+      numberPagination.value = page;
+    });
+  },
+
+  listenInputPagination: function () {
+    numberPagination.addEventListener("keyup", (e) => {
+      if (e.key === "Enter") {
+        page = +e.target.value;
+        this.loadContent(wordsList.slice(page * 20 - 20, page * 20));
       }
     });
   },
@@ -392,5 +426,6 @@ app.listenLikeButton();
 app.listenFilterSort();
 app.listenTransType();
 app.listenPaginate();
+app.listenInputPagination();
 
 app.ipcListenResponse();

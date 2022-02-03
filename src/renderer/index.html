@@ -267,42 +267,46 @@
           </select>
 
           <div id="pagination" class="w-32 flex justify-around">
-            <svg
-              id="pagination-prev"
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6 hover:scale-[110%] cursor-pointer"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
+            <button>
+              <svg
+                id="pagination-prev"
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6 hover:scale-[110%] cursor-pointer"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </button>
             <input
-              id='pagination-number'
-              class="w-[50%] border-2 border-gray-300 rounded-lg"
+              id="pagination-number"
+              class="w-[50%] border-2 border-gray-300 rounded-lg pl-1"
               type="number"
               min="0"
             />
-            <svg
-              id="pagination-next"
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6 hover:scale-[110%] cursor-pointer"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
+            <button>
+              <svg
+                id="pagination-next"
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6 hover:scale-[110%] cursor-pointer"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
           </div>
 
           <select
@@ -404,7 +408,10 @@
               Binary Dictionary là từ điển giúp dịch từ vựng và những tiện ích
               khác không cần kết nối internet.
             </p>
-            <p class="my-1 text-lg font-bold">Buy me a coffee ☕</p>
+            <p class="my-1 text-lg font-bold">
+              Nếu bạn cảm thấy thích ứng dụng đừng ngại donate cho mình ít tiền
+              lẻ để mua coffee dev xuyên màn đêm nhé ☕
+            </p>
             <p class="my-1 text-lg">Momo:</p>
             <div class="w-full h-44 flex justify-center">
               <img
