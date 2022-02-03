@@ -17,6 +17,7 @@ const numberPagination = document.querySelector("#pagination-number");
 const filterDOM = document.querySelector("#filter");
 const sortFilter = document.querySelector("#filter-word-sort");
 const wordTypeFilter = document.querySelector("#filter-word-type");
+const wordOrderFilter = document.querySelector("#filter-word-order");
 
 const searchFrameDOM = document.querySelector("#search-frame");
 const searchFormDOM = document.forms["search"];
@@ -72,17 +73,19 @@ const app = {
       }
     });
 
+    //active logic
     if (currentFrame === 4) {
+      wordOrderFilter.classList.add("hidden");
       this.loadContent(likeList);
     }
-
     if (currentFrame === 3) {
+      wordOrderFilter.classList.add("hidden");
       page = 1;
       numberPagination.value = page;
       this.loadContent(recentlyList.slice(0, 20));
     }
-
     if (currentFrame === 1) {
+      wordOrderFilter.classList.remove("hidden");
       wordList.innerHTML = null;
       //pagination reset
       page = 1;
@@ -107,6 +110,10 @@ const app = {
         searchFrameDOM.classList.add("h-[30%]");
         searchTextDOM.value = "";
         break;
+      case 2:
+        //display add word form
+        addWordFrameDOM.classList.remove("hidden");
+        break;
       case 1:
       case 3:
       case 4:
@@ -116,10 +123,6 @@ const app = {
         filterDOM.classList.remove("hidden");
         wordListDOM.classList.remove("hidden");
         searchTextDOM.value = "";
-        break;
-      case 2:
-        //display add word form
-        addWordFrameDOM.classList.remove("hidden");
         break;
       case 5:
         //display info frame
@@ -392,6 +395,8 @@ const app = {
       numberPagination.value = page;
     });
   },
+
+  listenWordOrder: function () {},
 
   listenInputPagination: function () {
     numberPagination.addEventListener("keyup", (e) => {
