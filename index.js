@@ -90,6 +90,7 @@ app.on("ready", () => {
   }
   //default: EV
   wordsRef = forestWordEV;
+  console.log(forestWordEV[9].length);
 });
 
 // listen search type (ev - ve)
@@ -126,27 +127,30 @@ ipcMain.on("get-list", (event, payload) => {
 });
 
 // add word
-function addWord(arr, idxEV, value) {
+function addWord(arr, idxWords, obj) {
   let index;
   for (let i = 0; i < arr.length; i++) {
-    if (objEV.word < arr[i].word) {
+    if (obj.word < arr[i].word) {
       index = i;
       break;
     }
   }
   const halfBefore = arr.slice(0, index + 1);
   const halfRemain = arr.slice(index, arr.length);
-  halfBefore[index] = value;
-  forestWordEV[idxEV] = [...halfBefore, ...halfRemain];
+  halfBefore[index] = obj;
+  forestWordEV[idxWords] = [...halfBefore, ...halfRemain];
 }
 ipcMain.on("add-word", (event, payload) => {
   const { objEV, objVE } = payload;
   const idxEV = +objEV.word.charCodeAt(0) - 97;
-  const idxVE = +objVE.word.charCodeAt(0) - 97;
-  const existEV = search(forestWordEV[idxEV], { word: objEV.word }, comparator);
   const evWords = forestWordEV[idxEV];
+  const idxVE = +objVE.word.charCodeAt(0) - 97;
+  const veWords = forestWordEV[idxVE];
+  const existEV = search(evWords, { word: objEV.word }, comparator);
+  const existVE = search(veWords, { word: objVE.word }, comparator);
   if (existEV === -1) {
-    addWord(evWords, idxEV, existEV);
+    addWord(evWords, idxEV, objEV);
+    writeWord("av", objEV.word.charAt(0), forestWordEV[idxEV]);
   } else {
     const options = {
       type: "warning",
@@ -163,6 +167,25 @@ ipcMain.on("add-word", (event, payload) => {
       writeWord("av", objEV.word.charAt(0), forestWordEV[idxEV]);
     }
   }
+  if (existVE === -1) {
+    addWord(veWords, idxVE, objVE);
+    writeWord("va", objVE.word.charAt(0), forestWordVE[idxVE]);
+  } else {
+    const options = {
+      type: "warning",
+      buttons: ["Đồng ý", "Không"],
+      defaultId: 2,
+      title: " Từ đã tồn tại trong dữ liệu Việt - Anh",
+      message: "Bạn có muốn ghi đè lại từ này?",
+      detail: "Việc ghi đè sẽ mất thông tin của từ cũ, chắc chắn chứ??",
+    };
+    const idxSelect = dialog.showMessageBoxSync(mainWindow, options);
+    if (idxSelect === 0) {s
+      veWords[existVE] = objVE;
+      forestWordEV[idxVE] = veWords;
+      writeWord("va", objVE.word.charAt(0), forestWordEV[idxVE]);
+    }
+  }
 });
 
 ipcMain.on("error-add-word", () => {
@@ -172,7 +195,7 @@ ipcMain.on("error-add-word", () => {
     defaultId: 1,
     title: " CÓ GÌ ĐÓ KHUM ỔN?",
     message: "Thêm từ thất bại",
-    detail: "Có lẽ bạn đã bỏ sót trường (*) nào đó, hãy kiểm tra lại",
+    detail: "Có lẽ bạn đã bỏ sót trường (*) nào đó, hãy kiểm tra lại!",
   };
   dialog.showMessageBox(mainWindow, options);
 });
