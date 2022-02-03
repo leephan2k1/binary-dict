@@ -221,6 +221,7 @@ const app = {
       if (currentFrame === 0) {
         intro.classList.add("hidden");
         resultFrameDOM.classList.remove("hidden");
+
         ipcRenderer.send("search-value", e.target.value);
         if (debounceTime) {
           clearTimeout(debounceTime);
@@ -492,6 +493,7 @@ const app = {
     ipcRenderer.on("search-value-result", (event, payload) => {
       if (currentFrame === 0) {
         this.activeLikeButton(false);
+        console.log(payload);
         if (payload?.html) {
           searchResultDOM.innerHTML = payload.html;
           wordPayload = {

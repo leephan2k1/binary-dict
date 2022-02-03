@@ -84,6 +84,7 @@ app.on("ready", () => {
   //VE
   for (let i = 0; i < 26; i++) {
     if (["f", "w", "j", "z"].includes((i + 10).toString(36))) {
+      forestWordVE.push([]);
       continue;
     }
     forestWordVE.push(Model.init("va", (i + 10).toString(36)));
@@ -109,8 +110,10 @@ ipcMain.on("search-value", (event, payload) => {
 
   if (searchValue.length) {
     const words = wordsRef[idx];
-    const resultNode = search(words, { word: searchValue }, comparator);
-    mainWindow.webContents.send("search-value-result", resultNode);
+    if(words && words.length){
+      const resultNode = search(words, { word: searchValue }, comparator);
+      mainWindow.webContents.send("search-value-result", resultNode);
+    }
   }
 });
 
