@@ -1,4 +1,4 @@
-const { ipcRenderer } = require("electron/renderer");
+// const { ipcRenderer } = require("electron/renderer");
 const fs = require("fs");
 const path = require("path");
 
@@ -8,19 +8,24 @@ const framesDOM = document.querySelectorAll(".frame");
 const intro = document.querySelector("#intro");
 const resultFrameDOM = document.querySelector("#result-frame");
 const wordListDOM = document.querySelector("#wordList");
+
 const prevPagination = document.querySelector("#pagination-prev");
 const nextPagination = document.querySelector("#pagination-next");
 const numberPagination = document.querySelector("#pagination-number");
+
 const filterDOM = document.querySelector("#filter");
+const sortFilter = document.querySelector("#filter-word-sort");
+const wordTypeFilter = document.querySelector("#filter-word-type");
+
 const searchFrameDOM = document.querySelector("#search-frame");
 const searchFormDOM = document.forms["search"];
 const searchTextDOM = document.querySelector("#search-text");
 const searchResultDOM = document.querySelector("#search-result");
+
 const addWordFrameDOM = document.querySelector("#add-word-frame");
 const softwareInfoDOM = document.querySelector("#software-info-frame");
 const wordList = document.querySelector("#wordList__details");
 const likeBtn = document.querySelector("#like");
-const sortFilter = document.querySelector("#filter-word-sort");
 const addWordForm = document.querySelector("#add-word");
 const transType = document.querySelector("#dict-type");
 
@@ -29,8 +34,12 @@ let likeList = [];
 let recentlyList = [];
 let wordsList = [];
 let wordPayload = {};
+//default english to vietnamese
+let transTypeValue = "ev";
 //pagination
 let page;
+//word type filter
+let wordType = "all";
 
 const app = {
   activeNavbar: function () {
@@ -76,10 +85,11 @@ const app = {
       wordList.innerHTML = null;
       //pagination reset
       page = 1;
+      //UI html
+      numberPagination.value = page;
       ipcRenderer.send("get-list", {
         request: true,
       });
-      numberPagination.value = page;
       ipcRenderer.on("get-list-result", (event, payload) => {
         wordsList = payload;
         this.loadContent(wordsList.slice(0, 20));
@@ -292,26 +302,59 @@ const app = {
     sortFilter.addEventListener("change", (e) => {
       if (currentFrame === 3) {
         if (e.target.value === "asc") {
-          this.loadContent(
-            recentlyList.sort((a, b) => (a.word < b.word ? -1 : 1))
-          );
+          recentlyList.sort((a, b) => (a.word < b.word ? -1 : 1))
+          // this.loadContent(
+          //   recentlyList
+          //     .slice(page * 20 - 20, page * 20)
+          //     .sort((a, b) => (a.word < b.word ? -1 : 1))
+          // );
         }
         if (e.target.value === "desc") {
-          this.loadContent(
-            recentlyList.sort((a, b) => (a.word > b.word ? -1 : 1))
-          );
+          recentlyList.sort((a, b) => (a.word > b.word ? -1 : 1))
+          // this.loadContent(
+          //   recentlyList
+          //     .slice(page * 20 - 20, page * 20)
+          //     .sort((a, b) => (a.word > b.word ? -1 : 1))
+          // );
         }
       }
       if (currentFrame === 4) {
         switch (e.target.value) {
           case "asc":
-            likeList.sort((a, b) => (a.word < b.word ? -1 : 1));
+            this.loadContent(
+              likeList
+                .slice(page * 20 - 20, page * 20)
+                .sort((a, b) => (a.word < b.word ? -1 : 1))
+            );
             break;
           case "desc":
-            likeList.sort((a, b) => (a.word > b.word ? -1 : 1));
+            this.loadContent(
+              likeList
+                .slice(page * 20 - 20, page * 20)
+                .sort((a, b) => (a.word > b.word ? -1 : 1))
+            );
             break;
         }
-        this.loadContent(likeList);
+      }
+      if(currentFrame === 1){
+
+      }
+    });
+  },
+
+  listenWordTypeFilter: function () {
+    wordTypeFilter.addEventListener("change", (e) => {
+      wordType = e.target.value;
+      if (e.target.value !== "all") {
+        if (transTypeValue === "ev") {
+          wordType = this.helper.typeEngToVi(e.target.value);
+          this.handleContentWordTypeFilter();
+        }
+        if (transTypeValue === "ve") {
+          this.handleContentWordTypeFilter();
+        }
+      } else {
+        this.handleContentPagination();
       }
     });
   },
@@ -319,21 +362,8 @@ const app = {
   listenTransType: function () {
     transType.addEventListener("change", (e) => {
       ipcRenderer.send("trans-type", e.target.value);
+      transTypeValue = e.target.value;
     });
-  },
-
-  handleContentPagination: function () {
-    switch (currentFrame) {
-      case 1:
-        this.loadContent(wordsList.slice(page * 20 - 20, page * 20));
-        break;
-      case 3:
-        this.loadContent(recentlyList.slice(page * 20 - 20, page * 20));
-        break;
-      case 4:
-        this.loadContent(likeList.slice(page * 20 - 20, page * 20));
-        break;
-    }
   },
 
   listenPaginate: function () {
@@ -369,9 +399,38 @@ const app = {
     numberPagination.addEventListener("keyup", (e) => {
       if (e.key === "Enter") {
         page = +e.target.value;
-        this.loadContent(wordsList.slice(page * 20 - 20, page * 20));
+        this.handleContentPagination();
       }
     });
+  },
+
+  handleContentPagination: function () {
+    switch (currentFrame) {
+      case 1:
+        if (wordType === "all") {
+          this.loadContent(wordsList.slice(page * 20 - 20, page * 20));
+        } else {
+          this.handleContentWordTypeFilter();
+        }
+        break;
+      case 3:
+        this.loadContent(recentlyList.slice(page * 20 - 20, page * 20));
+        break;
+      case 4:
+        this.loadContent(likeList.slice(page * 20 - 20, page * 20));
+        break;
+    }
+  },
+
+  handleContentWordTypeFilter: function () {
+    switch (currentFrame) {
+      case 1:
+        const cloneWordsList = wordsList.filter((e) =>
+          e.word_types.includes(wordType)
+        );
+        this.loadContent(cloneWordsList.slice(page * 20 - 20, page * 20));
+        break;
+    }
   },
 
   styleResult: function () {
@@ -395,6 +454,29 @@ const app = {
     ols.forEach((e) => {
       e.classList.add("px-6", "py-1", "list-disc", "list-inside");
     });
+  },
+
+  helper: {
+    typeEngToVi: function (value) {
+      switch (value) {
+        case "noun":
+          return "danh từ";
+        case "adj":
+          return "tính từ";
+        case "verb":
+          return "động từ";
+        case "adv":
+          return "trạng từ";
+        case "pre":
+          return "giới từ";
+        case "pro":
+          return "đại từ";
+        case "con":
+          return "liên từ";
+        case "int":
+          return "thán từ";
+      }
+    },
   },
 
   ipcListenResponse: function () {
@@ -426,6 +508,7 @@ app.listenLikeButton();
 app.listenFilterSort();
 app.listenTransType();
 app.listenPaginate();
+app.listenWordTypeFilter();
 app.listenInputPagination();
 
 app.ipcListenResponse();
