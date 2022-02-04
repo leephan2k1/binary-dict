@@ -6,6 +6,8 @@ const menuItemsDOM = document.querySelectorAll(".menu-item");
 const framesDOM = document.querySelectorAll(".frame");
 
 const intro = document.querySelector("#intro");
+const notFoundWord = document.querySelector("#not-found-word");
+const addWordButton = document.querySelector("#go-to-add-word");
 const facebookContact = document.querySelector(".contact");
 const resultFrameDOM = document.querySelector("#result-frame");
 const wordListDOM = document.querySelector("#wordList");
@@ -215,7 +217,6 @@ const app = {
     searchTextDOM.addEventListener("keyup", (e) => {
       if (currentFrame === 0) {
         intro.classList.add("hidden");
-        resultFrameDOM.classList.remove("hidden");
 
         ipcRenderer.send("search-value", e.target.value);
         if (debounceTime) {
@@ -474,6 +475,25 @@ const app = {
     }
   },
 
+  handleNotFoundWord: function () {
+    notFoundWord.classList.remove("hidden");
+    resultFrameDOM.classList.add("hidden");
+    addWordButton.addEventListener("click", () => {
+      //remove all active
+      menuItemsDOM.forEach((e) => {
+        e.classList.remove("active");
+      });
+      //hidden all frame
+      framesDOM.forEach((e) => {
+        e.classList.add("hidden");
+      });
+      //display frame 0
+      menuItemsDOM[2].classList.add("active");
+      //display current frame match with item
+      this.activeFrame();
+    });
+  },
+
   styleResult: function () {
     const h1s = document.querySelectorAll("#search-result h1");
     const h2s = document.querySelectorAll("#search-result h2");
@@ -524,7 +544,9 @@ const app = {
     ipcRenderer.on("search-value-result", (event, payload) => {
       if (currentFrame === 0) {
         this.activeLikeButton(false);
-        if (payload?.html) {
+        if (payload?.html && payload) {
+          resultFrameDOM.classList.remove("hidden");
+          notFoundWord.classList.add("hidden");
           searchResultDOM.innerHTML = payload.html;
           wordPayload = {
             word: payload.word,
@@ -532,9 +554,11 @@ const app = {
             word_types: payload.word_types,
           };
           this.styleResult();
+          const exist = likeList.find((e) => e.word === payload?.word);
+          if (exist) this.activeLikeButton(true);
+        } else {
+          this.handleNotFoundWord();
         }
-        const exist = likeList.find((e) => e.word === payload?.word);
-        if (exist) this.activeLikeButton(true);
       }
     });
   },
