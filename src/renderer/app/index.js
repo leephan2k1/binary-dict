@@ -66,10 +66,8 @@ const app = {
   },
 
   activeFrame: function () {
-    let indexFrame;
     menuItemsDOM.forEach((item, index) => {
       if (item.classList.contains("active")) {
-        indexFrame = index;
         currentFrame = index;
         return;
       }
@@ -95,7 +93,7 @@ const app = {
     }
 
     //active ui
-    switch (indexFrame) {
+    switch (currentFrame) {
       case 0:
         //display search + result search
         // resultFrameDOM.classList.remove("hidden");
@@ -282,7 +280,7 @@ const app = {
       e.preventDefault();
 
       if (!this.validateAddForm()) {
-        ipcRenderer.send('error-add-word');
+        ipcRenderer.send("error-add-word");
       } else {
         const wordTypeVie = this.helper.typeEngToVi(
           addWordForm["word-type"].value
@@ -554,6 +552,23 @@ const app = {
     numberPagination.value = page;
   },
 
+  ipcListenRedirect: function () {
+    ipcRenderer.on("add-word-success", () => {
+      //remove all active
+      menuItemsDOM.forEach((e) => {
+        e.classList.remove("active");
+      });
+      //hidden all frame
+      framesDOM.forEach((e) => {
+        e.classList.add("hidden");
+      });
+      //display frame 0
+      menuItemsDOM[0].classList.add("active");
+      //display current frame match with item
+      this.activeFrame();
+    });
+  },
+
   listenContact: function () {
     facebookContact.addEventListener("click", (e) => {
       e.preventDefault();
@@ -578,3 +593,4 @@ app.listenContact();
 app.listenWordOrder();
 
 app.ipcListenSearchResponse();
+app.ipcListenRedirect();

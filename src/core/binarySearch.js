@@ -5,7 +5,7 @@ const binarySearch = function (sortedArray, seekElement, comparatorCallback) {
   const comparator = new Comparator(comparatorCallback);
 
   let startIndex = 0;
-  let endIndex = sortedArray.length - 1;
+  let endIndex = sortedArray?.length - 1;
 
   while (startIndex <= endIndex) {
 

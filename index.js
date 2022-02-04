@@ -82,6 +82,7 @@ app.on("ready", () => {
   }
   //VE
   for (let i = 0; i < 26; i++) {
+    //vietnamese hasn't these words
     if (["f", "w", "j", "z"].includes((i + 10).toString(36))) {
       forestWordVE.push([]);
       continue;
@@ -90,7 +91,6 @@ app.on("ready", () => {
   }
   //default: EV
   wordsRef = forestWordEV;
-  console.log(forestWordEV[9].length);
 });
 
 // listen search type (ev - ve)
@@ -127,30 +127,48 @@ ipcMain.on("get-list", (event, payload) => {
 });
 
 // add word
-function addWord(arr, idxWords, obj) {
-  let index;
-  for (let i = 0; i < arr.length; i++) {
-    if (obj.word < arr[i].word) {
-      index = i;
-      break;
+function addWord(arr, idxWords, obj, forestWords) {
+  if (arr.length) {
+    let index;
+    for (let i = 0; i < arr.length; i++) {
+      if (obj.word < arr[i].word) {
+        index = i;
+        break;
+      }
     }
+    const halfBefore = arr.slice(0, index + 1);
+    const halfRemain = arr.slice(index, arr.length);
+    halfBefore[index] = obj;
+    forestWords[idxWords] = [...halfBefore, ...halfRemain];
+  } else {
+    forestWords[idxWords].push(obj);
   }
-  const halfBefore = arr.slice(0, index + 1);
-  const halfRemain = arr.slice(index, arr.length);
-  halfBefore[index] = obj;
-  forestWordEV[idxWords] = [...halfBefore, ...halfRemain];
 }
 ipcMain.on("add-word", (event, payload) => {
   const { objEV, objVE } = payload;
   const idxEV = +objEV.word.charCodeAt(0) - 97;
   const evWords = forestWordEV[idxEV];
+
   const idxVE = +objVE.word.charCodeAt(0) - 97;
-  const veWords = forestWordEV[idxVE];
+  const veWords = forestWordVE[idxVE];
+
   const existEV = search(evWords, { word: objEV.word }, comparator);
   const existVE = search(veWords, { word: objVE.word }, comparator);
+
+  const optionsSuccess = {
+    type: "info",
+    buttons: ["Thôi khỏi, cảm ơn", "Tra luôn!"],
+    defaultId: 1,
+    title: " Thêm từ thành công!",
+    message: "Người anh (chị) em đã thêm từ thành công",
+    detail: "Vào tra từ đã thêm luôn chứ chờ gì nữa! :)",
+  };
+  let success = false;
+
   if (existEV === -1) {
-    addWord(evWords, idxEV, objEV);
+    addWord(evWords, idxEV, objEV, forestWordEV);
     writeWord("av", objEV.word.charAt(0), forestWordEV[idxEV]);
+    success = true;
   } else {
     const options = {
       type: "warning",
@@ -165,11 +183,16 @@ ipcMain.on("add-word", (event, payload) => {
       evWords[existEV] = objEV;
       forestWordEV[idxEV] = evWords;
       writeWord("av", objEV.word.charAt(0), forestWordEV[idxEV]);
+      success = true;
+    } else {
+      success = false;
     }
   }
+
   if (existVE === -1) {
-    addWord(veWords, idxVE, objVE);
+    addWord(veWords, idxVE, objVE, forestWordVE);
     writeWord("va", objVE.word.charAt(0), forestWordVE[idxVE]);
+    success = true;
   } else {
     const options = {
       type: "warning",
@@ -180,10 +203,21 @@ ipcMain.on("add-word", (event, payload) => {
       detail: "Việc ghi đè sẽ mất thông tin của từ cũ, chắc chắn chứ??",
     };
     const idxSelect = dialog.showMessageBoxSync(mainWindow, options);
-    if (idxSelect === 0) {s
+    if (idxSelect === 0) {
       veWords[existVE] = objVE;
-      forestWordEV[idxVE] = veWords;
-      writeWord("va", objVE.word.charAt(0), forestWordEV[idxVE]);
+      forestWordVE[idxVE] = veWords;
+      writeWord("va", objVE.word.charAt(0), forestWordVE[idxVE]);
+      success = true;
+    } else {
+      success = false;
+    }
+  }
+
+  //show success info dialog
+  if (success) {
+    const choiceIdx = dialog.showMessageBoxSync(mainWindow, optionsSuccess);
+    if (choiceIdx === 1) {
+      mainWindow.webContents.send("add-word-success");
     }
   }
 });
