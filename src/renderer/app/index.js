@@ -74,25 +74,31 @@ const app = {
         return;
       }
     });
-    
-
+    sortFilter.value = 'asc';
     //active logic
     if (currentFrame === 4) {
       wordOrderFilter.classList.add("hidden");
+      page = 1;
+      numberPagination.value = 1;
       this.loadContent(likeList);
     }
     if (currentFrame === 3) {
       wordOrderFilter.classList.add("hidden");
       page = 1;
-      numberPagination.value = page;
+      numberPagination.value = 1;
       this.loadContent(recentlyList.slice(0, 20));
     }
     if (currentFrame === 1) {
       wordOrderFilter.classList.remove("hidden");
       wordList.innerHTML = null;
+
       //pagination reset
       page = 1;
-      this.ipcListenListResponse();
+      if (wordsList.length === 0) {
+        this.ipcListenListResponse();
+      } else {
+        this.loadContent(wordsList.slice(0, 20));
+      }
     }
 
     //active ui
@@ -165,6 +171,14 @@ const app = {
 </svg>
       </li>`;
     });
+    //hidden remove button frame list
+    const removeBtns = document.querySelectorAll(".remove-word");
+    if (currentFrame === 1) {
+      removeBtns.forEach((e) => e.classList.add("hidden"));
+    } else {
+      removeBtns.forEach((e) => e.classList.remove("hidden"));
+    }
+    this.handleRemoveWord();
   },
 
   writeWordsToFile: function (fileName, obj) {
@@ -497,6 +511,27 @@ const app = {
       menuItemsDOM[2].classList.add("active");
       //display current frame match with item
       this.activeFrame();
+    });
+  },
+
+  handleRemoveWord: function () {
+    const removeBtns = document.querySelectorAll(".remove-word");
+    removeBtns.forEach((button) => {
+      button.addEventListener("click", () => {
+        const { parentNode } = button;
+        const word = parentNode.querySelector(".word-list");
+        const { innerText } = word;
+        if (currentFrame === 3) {
+          recentlyList = recentlyList.filter((e) => e.word !== innerText);
+          this.loadContent(recentlyList.slice(page * 20 - 20, page * 20));
+          this.writeWordsToFile("recently", recentlyList);
+        }
+        if (currentFrame === 4) {
+          likeList = likeList.filter((e) => e.word !== innerText);
+          this.loadContent(likeList.slice(page * 20 - 20, page * 20));
+          this.writeWordsToFile("like", likeList);
+        }
+      });
     });
   },
 
