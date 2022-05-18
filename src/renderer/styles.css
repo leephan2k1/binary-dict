@@ -632,6 +632,14 @@ Ensure the default browser behavior of the `hidden` attribute.
   width: 1rem;
 }
 
+.basis-4\/5{
+  flex-basis: 80%;
+}
+
+.basis-1\/5{
+  flex-basis: 20%;
+}
+
 .cursor-pointer{
   cursor: pointer;
 }
