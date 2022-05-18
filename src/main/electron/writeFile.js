@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const arr = [];
-const writeFile = (type, character, wordObject) => {
+const writeFile = (type, character, wordObject, mode) => {
   try {
     const rawData = fs.readFileSync(
       path.join(
@@ -13,7 +13,18 @@ const writeFile = (type, character, wordObject) => {
       )
     );
     const words = JSON.parse(rawData);
-    words.push(wordObject);
+
+    if (mode === "add") {
+      words.push(wordObject);
+    } else {
+      words.forEach((wordObj) => {
+        if (wordObj?.word === wordObject?.word) {
+          //override:
+          Object.assign(wordObj, wordObject);
+          return;
+        }
+      });
+    }
     fs.writeFileSync(
       path.join(
         __dirname,

@@ -7,6 +7,7 @@ const framesDOM = document.querySelectorAll(".frame");
 
 const intro = document.querySelector("#intro");
 const notFoundWord = document.querySelector("#not-found-word");
+const addWordButton = document.querySelector("#go-to-add-word");
 
 const resultFrameDOM = document.querySelector("#result-frame");
 const wordListDOM = document.querySelector("#wordList");
@@ -223,7 +224,7 @@ const app = {
         e.classList.add("hidden");
       });
       //display frame 0
-      menuItemsDOM[2].classList.add("active");
+      menuItemsDOM[1].classList.add("active");
       //display current frame match with item
       this.activeFrame();
     });
@@ -290,10 +291,19 @@ const app = {
       e.preventDefault();
       const objEV = {
         description: `${addWordForm["word-type"].value}: ${addWordForm.meaning.value}`,
-        html: `<h1>${addWordForm.word.value}</h1><h2>${addWordForm["word-type"].value}</h2><ul><li>${addWordForm.meaning.value}</li><li>${addWordForm.example.value}</li></ul>`,
+        html: `<h1>${addWordForm.word.value}</h1><h2>${
+          addWordForm["word-type"].value
+        }</h2><ul><li>${addWordForm.meaning.value}</li>${
+          addWordForm.example.value && `<li>${addWordForm.example.value}</li>`
+        }</ul>`,
         word: addWordForm.word.value,
       };
       ipcRenderer.send("add-word", objEV);
+      //reset value
+      addWordForm["word-type"].value = "danh từ";
+      addWordForm.meaning.value = "";
+      addWordForm.example.value = "";
+      addWordForm.word.value = "";
     });
   },
 
@@ -404,6 +414,23 @@ const app = {
       }
     });
   },
+
+  ipcListenRedirect: function () {
+    ipcRenderer.on("add-word-success", () => {
+      //remove all active
+      menuItemsDOM.forEach((e) => {
+        e.classList.remove("active");
+      });
+      //hidden all frame
+      framesDOM.forEach((e) => {
+        e.classList.add("hidden");
+      });
+      //display frame 0
+      menuItemsDOM[0].classList.add("active");
+      //display current frame match with item
+      this.activeFrame();
+    });
+  },
 };
 
 app.readJSONtoWords("like");
@@ -416,3 +443,4 @@ app.listenLikeButton();
 app.listenFilterSort();
 app.ipcListenResponse();
 app.ipcGetTotalWord();
+app.ipcListenRedirect();

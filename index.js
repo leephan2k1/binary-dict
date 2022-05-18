@@ -27,7 +27,7 @@
 //                   A DI ĐÀ PHẬT!                     //
 //                                                     //
 /////////////////////////////////////////////////////////
-const { app, BrowserWindow, ipcMain } = require("electron");
+const { app, BrowserWindow, ipcMain, dialog } = require("electron");
 const path = require("path");
 const Model = require("./src/main/electron/model");
 const writeWord = require("./src/main/electron/writeFile");
@@ -102,9 +102,67 @@ ipcMain.on("search-value", (event, payload) => {
 //Lắng nghe add word
 ipcMain.on("add-word", (event, payload) => {
   const idx = +payload?.word.charCodeAt(0) - 97;
-  const exist = forestWords[idx].search({ word: payload.word });
-  if (!exist) {
+  const wordNode = forestWords[idx].search({ word: payload.word });
+  let success = false;
+
+  const dialogOptions = {
+    type: "info",
+    buttons: ["Thôi khỏi, cảm ơn", "Tra luôn!"],
+    defaultId: 1,
+    title: " Thêm từ thành công!",
+    message: "Người anh (chị) em đã thêm từ thành công",
+    detail: "Vào tra từ đã thêm luôn chứ chờ gì nữa! :)",
+  };
+
+  if (!wordNode) {
     forestWords[idx].insert(payload);
-    writeWord("av", payload.word.charAt(0), payload);
+    writeWord("av", payload.word.charAt(0), payload, "add");
+    success = true;
+    count++;
+    mainWindow.webContents.send("total-word", count);
+  } else {
+    //select next or cancel
+    const dialogOptions = {
+      title: " Từ đã tồn tại!",
+      message: "Từ đã tồn tại, bạn muốn tiếp tục thêm không?",
+      type: "question",
+      buttons: ["Tiếp tục thêm", "Thôi không thêm"],
+      defaultId: 1,
+    };
+    const choiceIdx = dialog.showMessageBoxSync(mainWindow, dialogOptions);
+
+    //select override or merge
+    if (choiceIdx === 0) {
+      const dialogOptions = {
+        title: "Lựa chọn cách thêm",
+        message: "Thêm ghi đè hoặc nối tiếp? CẨN THẬN với thêm ghi đè!",
+        type: "question",
+        buttons: ["Ghi đè", "Nối tiếp", "Thôi nghỉ"],
+        defaultId: 2,
+      };
+      const choiceIdx = dialog.showMessageBoxSync(mainWindow, dialogOptions);
+      if (choiceIdx === 0) {
+        //override
+        wordNode.value = payload;
+        writeWord("av", payload.word.charAt(0), wordNode.value, "override");
+        success = true;
+      } else if (choiceIdx === 1) {
+        //remove <h1>
+        const regex = /<s*h1[^>]*>(.*?)<s*\/s*h1>/;
+        payload.html = payload.html.replace(regex, "");
+        //merge:
+        wordNode.value.html += payload.html;
+        writeWord("av", payload.word.charAt(0), wordNode.value, "merge");
+        success = true;
+      }
+    }
+  }
+
+  //show success dialog
+  if (success) {
+    const choiceIdx = dialog.showMessageBoxSync(mainWindow, dialogOptions);
+    if (choiceIdx === 1) {
+      mainWindow.webContents.send("add-word-success");
+    }
   }
 });
