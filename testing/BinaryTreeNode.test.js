@@ -3,10 +3,18 @@ const BinaryTreeNode = require("../src/core/BinaryTreeNode.js");
 const node = new BinaryTreeNode();
 
 //Mong đợi: null
-console.log("Line 6", node.value);
-console.log("Line 7", node.left);
-console.log("Line 8", node.right);
-console.log("Line 9", node.parent);
+test("TC1: kiem tra null", () => {
+  expect(node.value).toBe(null);
+});
+test("TC2: kiem tra null", () => {
+  expect(node.left).toBe(null);
+});
+test("TC3: kiem tra null", () => {
+  expect(node.right).toBe(null);
+});
+test("TC4: kiem tra null", () => {
+  expect(node.parent).toBe(null);
+});
 
 const binaryTree = new BinaryTreeNode(0);
 const leftNode = new BinaryTreeNode(1);
@@ -18,60 +26,103 @@ binaryTree.setLeft(leftNode).setRight(rightNode);
      1     2
 */
 
-//Mong đợi: 0
-console.log("Line 22", binaryTree.value);
-console.log("Line 23", binaryTree.left.parent.value);
-console.log("Line 24", binaryTree.right.parent.value);
-//Mong đợi: 1
-console.log("Line 26", binaryTree.left.value);
-//Mong đợi: 2
-console.log("Line 28", binaryTree.right.value);
-//Mong đợi: null
-console.log("Line 30", binaryTree.parent);
-console.log("Line 31", binaryTree.left.left);
-console.log("Line 32", binaryTree.right.right);
-//Mong đợi: [1, 0, 2]
-console.log("Line 34", binaryTree.traverseInOrder());
-//Mong đợi: "1,0,2"
-console.log("Line 36", binaryTree.toString());
+test("TC5: kiem tra root value", () => {
+  expect(binaryTree.value).toBe(0);
+});
 
-//Mong đợi: true
-console.log("Line 39", binaryTree.removeChild(binaryTree.left));
+test("TC6: kiem tra root value", () => {
+  expect(binaryTree.left.parent.value).toBe(0);
+});
 
-//Mong đợi: null
-console.log("Line 42", binaryTree.left);
-//Mong đợi: [0, 2]
-console.log("Line 44", binaryTree.traverseInOrder());
-//Mong đợi: "0,2"
-console.log("Line 44", binaryTree.toString());
+test("TC7: kiem tra root value", () => {
+  expect(binaryTree.right.parent.value).toBe(0);
+});
 
-binaryTree.setLeft(leftNode);
-//Mong đợi: true
-console.log("Line 50", binaryTree.removeChild(binaryTree.right));
-//Mong đợi: null
-console.log("Line 52", binaryTree.right);
-//Mong đợi: [1, 0]
-console.log("Line 54", binaryTree.traverseInOrder());
-//Mong đợi: "1,0"
-console.log("Line 56", binaryTree.toString());
-binaryTree.setRight(rightNode);
+test("TC8: kiem tra left value", () => {
+  expect(binaryTree.left.value).toBe(1);
+});
 
-//REPLACE TEST
-const replacementNode = new BinaryTreeNode(5);
-rightNode.setRight(replacementNode);
-//Mong đợi: [1, 0, 2, 5]
-console.log("Line 63", binaryTree.traverseInOrder());
-//Mong đợi: "1,0,2,5"
-console.log("Line 65", binaryTree.toString());
-//Mong đợi: true
-console.log(
-  "Line 67",
-  binaryTree.replaceChild(binaryTree.right, binaryTree.right.right)
-);
-//Mong đợi: 5
-console.log("Line 69", binaryTree.right.value);
+test("TC9: kiem tra right value", () => {
+  expect(binaryTree.right.value).toBe(2);
+});
 
-//GET HEIGHT TEST
+test("TC10: kiem tra parent cua root", () => {
+  expect(binaryTree.parent).toBe(null);
+});
+test("TC11: kiem tra child cua left", () => {
+  expect(binaryTree.left.left).toBe(null);
+});
+test("TC12: kiem tra child cua right", () => {
+  expect(binaryTree.right.right).toBe(null);
+});
+
+test("TC13: kiem tra duyet trung tu", () => {
+  expect(JSON.stringify(binaryTree.traverseInOrder())).toBe('["1","0","2"]');
+});
+
+test("TC14: kiem tra duyet trung tu", () => {
+  expect(binaryTree.toString()).toBe("1,0,2");
+});
+
+test("TC15: kiem tra xoa nut", () => {
+  expect(binaryTree.removeChild(binaryTree.left)).toBeTruthy();
+});
+
+test("TC16: kiem tra sau khi xoa", () => {
+  expect(binaryTree.left).toBe(null);
+});
+
+test("TC17: kiem tra duyet trung tu sau khi xoa", () => {
+  expect(JSON.stringify(binaryTree.traverseInOrder())).toBe('["0","2"]');
+});
+
+test("TC18: kiem tra duyet trung tu sau khi xoa", () => {
+  expect(binaryTree.toString()).toBe("0,2");
+});
+
+test("TC19: kiem tra xoa con phai", () => {
+  binaryTree.setLeft(leftNode);
+  expect(binaryTree.removeChild(binaryTree.right)).toBeTruthy();
+});
+
+test("TC20: kiem tra con phai sau khi xoa", () => {
+  expect(binaryTree.right).toBe(null);
+});
+
+test("TC21: kiem tra duyet trung tu sau khi xoa con phai", () => {
+  expect(JSON.stringify(binaryTree.traverseInOrder())).toBe('["1","0"]');
+});
+
+test("TC22: kiem tra duyet trung tu sau khi xoa con phai", () => {
+  expect(binaryTree.toString()).toBe("1,0");
+});
+
+// //REPLACE TEST
+
+test("TC23: kiem tra duyet trung tu sau khi them con phai", () => {
+  binaryTree.setRight(rightNode);
+  const replacementNode = new BinaryTreeNode(5);
+  rightNode.setRight(replacementNode);
+  expect(JSON.stringify(binaryTree.traverseInOrder())).toBe(
+    '["1","0","2","5"]'
+  );
+});
+
+test("TC24: kiem tra duyet trung tu sau khi them con phai", () => {
+  expect(binaryTree.toString()).toBe("1,0,2,5");
+});
+
+test("TC25: kiem tra thay the coi phai", () => {
+  expect(
+    binaryTree.replaceChild(binaryTree.right, binaryTree.right.right)
+  ).toBeTruthy();
+});
+
+test("TC26: kiem tra gia tri sau khi thay the", () => {
+  expect(binaryTree.right.value).toBe(5);
+});
+
+// //GET HEIGHT TEST
 const root = new BinaryTreeNode(1);
 const left = new BinaryTreeNode(3);
 const right = new BinaryTreeNode(2);
@@ -79,26 +130,29 @@ const grandLeft = new BinaryTreeNode(5);
 const grandRight = new BinaryTreeNode(6);
 const grandGrandLeft = new BinaryTreeNode(7);
 
-//Mong đợi: 0
-console.log("Line 79", root.height);
-console.log("Line 80", root.balanceFactor);
-root.setLeft(left).setRight(right);
-//Mong đợi: 1
-console.log("Line 86", root.height);
-//Mong đợi: 0
-console.log("Line 88", root.balanceFactor);
+test("TC27: kiem tra do sau cay o nut root", () => {
+  expect(root.height).toBe(0);
+});
 
-left
-.setLeft(grandLeft)
-.setRight(grandRight);
+test("TC28: kiem tra he so can bang", () => {
+  expect(root.balanceFactor).toBe(0);
+});
 
-//Mong đợi: 2
-console.log("Line 86", root.height);
+test("TC29: kiem tra do sau sau khi them con phai", () => {
+  root.setLeft(left).setRight(right);
+  expect(root.height).toBe(1);
+});
 
-grandLeft.setLeft(grandGrandLeft);
+test("TC30: kiem tra he so can bang sau khi them con phai", () => {
+  expect(root.balanceFactor).toBe(0);
+});
 
-//Mong đợi: 3
-console.log("Line 101", root.height);
+test("TC31: kiem tra do sau sau khi them con phai cua con trai", () => {
+  left.setLeft(grandLeft).setRight(grandRight);
+  expect(root.height).toBe(2);
+});
 
-
-
+test("TC32: kiem tra do sau sau khi them con trai cua con trai", () => {
+  grandLeft.setLeft(grandGrandLeft);
+  expect(root.height).toBe(3);
+});
