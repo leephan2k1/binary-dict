@@ -179,6 +179,25 @@ const app = {
     }
   },
 
+  handleNotFoundWord: function () {
+    notFoundWord.classList.remove("hidden");
+    resultFrameDOM.classList.add("hidden");
+    addWordButton.addEventListener("click", () => {
+      //remove all active
+      menuItemsDOM.forEach((e) => {
+        e.classList.remove("active");
+      });
+      //hidden all frame
+      framesDOM.forEach((e) => {
+        e.classList.add("hidden");
+      });
+      //display frame 0
+      menuItemsDOM[2].classList.add("active");
+      //display current frame match with item
+      this.activeFrame();
+    });
+  },
+
   listenSearchForm: function () {
     searchFormDOM.addEventListener("submit", (e) => {
       e.preventDefault();
@@ -324,15 +343,19 @@ const app = {
         this.activeLikeButton(false);
         if (payload?.html) {
           resultFrameDOM.classList.remove("hidden");
+          notFoundWord.classList.add("hidden");
           searchResultDOM.innerHTML = payload.html;
           wordPayload = {
             word: payload.word,
             desc: payload.description,
           };
           this.styleResult();
+
+          const exist = likeList.find((e) => e.word === payload?.word);
+          if (exist) this.activeLikeButton(true);
+        } else {
+          this.handleNotFoundWord();
         }
-        const exist = likeList.find((e) => e.word === payload?.word);
-        if (exist) this.activeLikeButton(true);
       }
     });
   },
