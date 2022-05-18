@@ -90,7 +90,8 @@ ipcMain.on("get-total-word", (event, payload) => {
 
 //Lắng nghe search action
 ipcMain.on("search-value", (event, payload) => {
-  const searchValue = payload.trim();
+  const searchValue = payload.trim().toLowerCase();
+
   const idx = +searchValue.charCodeAt(0) - 97;
 
   if (searchValue.length) {
