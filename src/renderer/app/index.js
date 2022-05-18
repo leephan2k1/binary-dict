@@ -244,7 +244,7 @@ const app = {
           clearTimeout(debounceTime);
         }
         debounceTime = setTimeout(() => {
-          if (e.target.value === wordPayload.word) {
+          if (e.target.value?.trim().toLowerCase() === wordPayload.word) {
             const exist = recentlyList.find((e) => e.word === wordPayload.word);
             if (!exist) {
               recentlyList.unshift({
