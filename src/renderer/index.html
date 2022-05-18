@@ -189,7 +189,7 @@
         <!-- search result  -->
         <div
           id="result-frame"
-          class="w-[80%] h-[60%] border-2 border-gray-300 rounded-2xl overflow-x-hidden shadow-2xl flex flex-col scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 frame"
+          class="hidden w-[80%] h-[60%] border-2 border-gray-300 rounded-2xl overflow-x-hidden shadow-2xl flex flex-col scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 frame"
         >
           <div id="interactive">
             <div id="like">
@@ -261,6 +261,108 @@
               </ul>
             </li>
           </ul> -->
+        </div>
+
+        <!-- not found words -->
+        <div
+          id="not-found-word"
+          class="w-[80%] h-[60%] overflow-x-hidden flex flex-col scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 frame hidden"
+        >
+          <svg
+            width="96"
+            height="96"
+            fill="none"
+            class="mx-auto mb-6 text-gray-900"
+          >
+            <path
+              d="M36 28.024A18.05 18.05 0 0025.022 39M59.999 28.024A18.05 18.05 0 0170.975 39"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+            <ellipse
+              cx="37.5"
+              cy="43.5"
+              rx="4.5"
+              ry="7.5"
+              fill="currentColor"
+            ></ellipse>
+            <ellipse
+              cx="58.5"
+              cy="43.5"
+              rx="4.5"
+              ry="7.5"
+              fill="currentColor"
+            ></ellipse>
+            <path
+              d="M24.673 75.42a9.003 9.003 0 008.879 5.563m-8.88-5.562A8.973 8.973 0 0124 72c0-7.97 9-18 9-18s9 10.03 9 18a9 9 0 01-8.448 8.983m-8.88-5.562C16.919 68.817 12 58.983 12 48c0-19.882 16.118-36 36-36s36 16.118 36 36-16.118 36-36 36a35.877 35.877 0 01-14.448-3.017"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+            <path
+              d="M41.997 71.75A14.94 14.94 0 0148 70.5c2.399 0 4.658.56 6.661 1.556a3 3 0 003.999-4.066 12 12 0 00-10.662-6.49 11.955 11.955 0 00-7.974 3.032c1.11 2.37 1.917 4.876 1.972 7.217z"
+              fill="currentColor"
+            ></path>
+          </svg>
+          <p class="text-center">
+            Rất xin lỗi, Từ bạn tìm kiếm không có trong dữ liệu của ứng dụng!
+          </p>
+          <p class="text-center">
+            Hãy tự tạo cho mình bộ từ điển xịn xò bằng cách thêm từ mới! (tham
+            khảo nguồn từ điển online nếu có thể)
+          </p>
+          <div class="'w-full flex justify-center mt-3">
+            <svg
+              id="go-to-add-word"
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6 hover:scale-[120%] hover:text-gray-400 cursor-pointer"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+          </div>
+        </div>
+
+        <!-- intro -->
+        <div
+          id="intro"
+          class="w-[80%] h-[60%] overflow-x-hidden flex flex-col scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 frame"
+        >
+          <div class="text-gray-300 flex flex-col items-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-20 w-20"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+              />
+            </svg>
+            <p class="text-center text-gray-500 font-semibold select-none">
+              Made with ❤ by Lee
+            </p>
+            <p
+              id="total-word"
+              class="text-center text-gray-500 font-semibold select-none"
+            >
+              Hiện tại có tổng cộng: xxx từ
+            </p>
+          </div>
         </div>
 
         <div

@@ -5,6 +5,9 @@ const path = require("path");
 const menuItemsDOM = document.querySelectorAll(".menu-item");
 const framesDOM = document.querySelectorAll(".frame");
 
+const intro = document.querySelector("#intro");
+const notFoundWord = document.querySelector("#not-found-word");
+
 const resultFrameDOM = document.querySelector("#result-frame");
 const wordListDOM = document.querySelector("#wordList");
 const filterDOM = document.querySelector("#filter");
@@ -23,6 +26,7 @@ let currentFrame = 0;
 let likeList = [];
 let recentlyList = [];
 let wordPayload = {};
+let totalWord = 0;
 
 const app = {
   activeNavbar: function () {
@@ -66,7 +70,8 @@ const app = {
     switch (indexFrame) {
       case 0:
         //display search + result search
-        resultFrameDOM.classList.remove("hidden");
+        // resultFrameDOM.classList.remove("hidden");
+        intro.classList.remove("hidden");
         searchFrameDOM.classList.remove("hidden", "h-[20%]");
         searchFrameDOM.classList.add("h-[30%]");
         searchTextDOM.value = "";
@@ -182,6 +187,8 @@ const app = {
     let debounceTime;
     searchTextDOM.addEventListener("keyup", (e) => {
       if (currentFrame === 0) {
+        intro.classList.add("hidden");
+
         ipcRenderer.send("search-value", e.target.value);
         if (debounceTime) {
           clearTimeout(debounceTime);
@@ -316,6 +323,7 @@ const app = {
       if (currentFrame === 0) {
         this.activeLikeButton(false);
         if (payload?.html) {
+          resultFrameDOM.classList.remove("hidden");
           searchResultDOM.innerHTML = payload.html;
           wordPayload = {
             word: payload.word,
@@ -325,6 +333,20 @@ const app = {
         }
         const exist = likeList.find((e) => e.word === payload?.word);
         if (exist) this.activeLikeButton(true);
+      }
+    });
+  },
+
+  ipcGetTotalWord: async function () {
+    await ipcRenderer.send("get-total-word");
+
+    ipcRenderer.on("total-word", (event, payload) => {
+      if (payload) {
+        totalWord = +payload;
+        const wordCountDOM = document.getElementById("total-word");
+        if (wordCountDOM) {
+          wordCountDOM.innerText = ` Hiện tại có tổng cộng: ${totalWord} từ`;
+        }
       }
     });
   },
@@ -338,3 +360,4 @@ app.listenAddForm();
 app.listenLikeButton();
 app.listenFilterSort();
 app.ipcListenResponse();
+app.ipcGetTotalWord();

@@ -31,7 +31,7 @@ const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 const Model = require("./src/main/electron/model");
 const writeWord = require("./src/main/electron/writeFile");
-// require("electron-reload")(path.join(__dirname, "../renderer"));
+require("electron-reload")(path.join(__dirname, "../renderer"));
 
 let mainWindow;
 
@@ -52,13 +52,13 @@ const createWindow = () => {
   });
 
   // Không cần menu (production)
-  mainWindow.removeMenu();
+  // mainWindow.removeMenu();
 
   // Tải file html và hiển thị
   // mainWindow.loadURL("file:///src/renderer/index.html");
   mainWindow.loadFile(path.join(__dirname, "src", "renderer", "index.html"));
 
-  // mainWin.webContents.openDevTools();
+  mainWin.webContents.openDevTools();
 };
 
 app.whenReady().then(() => {
@@ -73,12 +73,21 @@ app.on("window-all-closed", () => {
 });
 
 const forestWords = [];
+let count = 0;
 app.on("ready", () => {
   for (let i = 0; i < 26; i++) {
-    const tree = Model.init("av", (i + 10).toString(36));
+    const { tree, length } = Model.init("av", (i + 10).toString(36));
+    count += length;
     forestWords.push(tree);
   }
 });
+
+ipcMain.on("get-total-word", (event, payload) => {
+  if (count) {
+    mainWindow.webContents.send("total-word", count);
+  }
+});
+
 //Lắng nghe search action
 ipcMain.on("search-value", (event, payload) => {
   const searchValue = payload.trim();
