@@ -36,8 +36,8 @@ const init = (type, character) => {
     if (words[y]) tree.insert(words[y]);
     x--;
   }
-
-  return tree;
+  const { length } = words;
+  return { tree, length };
 };
 
 module.exports = {
