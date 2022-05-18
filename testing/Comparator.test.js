@@ -2,43 +2,58 @@ const Comparator = require("../src/core/Comparator.js");
 
 const comparator = new Comparator();
 
-//Mong đợi: true
-console.log("line 6:", comparator.equal(0, 0));
+test("TC1: kiem tra method equal", () => {
+  expect(comparator.equal(0, 0)).toBeTruthy();
+});
 
-//Mong đợi: false
-console.log("line 9:", comparator.equal(0, 1));
+test("TC2: kiem tra method equal", () => {
+  expect(comparator.equal(0, 1)).toBe(false);
+});
 
-//Mong đợi: true
-console.log("line 12:", comparator.lessThan(0, 1));
+test("TC3: kiem tra method lessThan", () => {
+  expect(comparator.lessThan(0, 1)).toBeTruthy();
+});
 
-//Mong đợi: false
-console.log("line 15:", comparator.lessThan(1, 0));
+test("TC4: kiem tra method equal", () => {
+  expect(comparator.lessThan(1, 0)).toBe(false);
+});
 
-//Mong đợi: true
-console.log("line 18:", comparator.greaterThan(1, 0));
+test("TC5: kiem tra method greaterThan", () => {
+  expect(comparator.greaterThan(1, 0)).toBeTruthy();
+});
 
-//Mong đợi: false
-console.log("line 21:", comparator.greaterThan(0, 1));
+test("TC6: kiem tra method greaterThan", () => {
+  expect(comparator.greaterThan(0, 1)).toBe(false);
+});
 
-//Mong đợi: true
-console.log("line 24:", comparator.greaterThanOrEqual(1, 0));
-//Mong đợi: true
-console.log("line 26:", comparator.greaterThanOrEqual(0, 0));
+test("TC7: kiem tra method greaterThanOrEqual", () => {
+  expect(comparator.greaterThanOrEqual(1, 0)).toBeTruthy();
+});
 
-//Mong đợi: false
-console.log("line 29:", comparator.greaterThanOrEqual(0, 1));
+test("TC8: kiem tra method greaterThanOrEqual", () => {
+  expect(comparator.greaterThanOrEqual(0, 0)).toBeTruthy();
+});
 
-//Mong đợi: true
-console.log("line 32:", comparator.lessThanOrEqual(0, 1));
-//Mong đợi: true
-console.log("line 34:", comparator.lessThanOrEqual(1, 1));
+test("TC9: kiem tra method greaterThanOrEqual", () => {
+  expect(comparator.greaterThanOrEqual(0, 1)).toBe(false);
+});
 
-//Mong đợi: false
-console.log("line 37:", comparator.lessThanOrEqual(1, 0));
+test("TC10: kiem tra method lessThanOrEqual", () => {
+  expect(comparator.lessThanOrEqual(0, 1)).toBeTruthy();
+});
 
-//Mong đợi: true
-comparator.reverse();
-console.log("line 41:", comparator.lessThan(1, 0));
+test("TC11: kiem tra method lessThanOrEqual", () => {
+  expect(comparator.lessThanOrEqual(1, 1)).toBeTruthy();
+});
+
+test("TC12: kiem tra method lessThanOrEqual", () => {
+  expect(comparator.lessThanOrEqual(1, 0)).toBe(false);
+});
+
+test("TC13: kiem tra method lessThanOrEqual", () => {
+  comparator.reverse();
+  expect(comparator.lessThan(1, 0)).toBeTruthy();
+});
 
 const customComparator = new Comparator((objA, objB) => {
   //same ref
@@ -52,17 +67,30 @@ const customComparator = new Comparator((objA, objB) => {
   return objA.age < objB.age ? -1 : 1;
 });
 
-//Mong đợi: true
-console.log('line 56', customComparator.equal({age: 1}, {age: 1}));
-//Mong đợi: false
-console.log('line 58', customComparator.equal({age: 0}, {age: 1}));
+test("TC14: kiem tra method equal voi customComparator", () => {
+  expect(customComparator.equal({ age: 1 }, { age: 1 })).toBeTruthy();
+});
 
-//Mong đợi: true
-console.log('line 61', customComparator.lessThan({age: 0}, {age: 1}));
-//Mong đợi: false
-console.log('line 63', customComparator.lessThan({age: 1}, {age: 0}));
+test("TC15: kiem tra method equal voi customComparator", () => {
+  expect(customComparator.equal({ age: 0 }, { age: 1 })).toBe(false);
+});
 
-//Mong đợi: true
-console.log('line 66', customComparator.greaterThanOrEqual({age: 1}, {age: 1}));
-//Mong đợi: false
-console.log('line 68', customComparator.greaterThanOrEqual({age: 0}, {age: 1}));
+test("TC16: kiem tra method lessThan voi customComparator", () => {
+  expect(customComparator.lessThan({ age: 0 }, { age: 1 })).toBeTruthy();
+});
+
+test("TC17: kiem tra method equal voi customComparator", () => {
+  expect(customComparator.lessThan({ age: 1 }, { age: 0 })).toBe(false);
+});
+
+test("TC18: kiem tra method greaterThanOrEqual voi customComparator", () => {
+  expect(
+    customComparator.greaterThanOrEqual({ age: 1 }, { age: 1 })
+  ).toBeTruthy();
+});
+
+test("TC19: kiem tra method greaterThanOrEqual voi customComparator", () => {
+  expect(customComparator.greaterThanOrEqual({ age: 0 }, { age: 1 })).toBe(
+    false
+  );
+});
