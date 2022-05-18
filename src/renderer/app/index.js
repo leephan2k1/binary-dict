@@ -247,7 +247,7 @@ const app = {
           if (e.target.value === wordPayload.word) {
             const exist = recentlyList.find((e) => e.word === wordPayload.word);
             if (!exist) {
-              recentlyList.push({
+              recentlyList.unshift({
                 word: wordPayload.word,
                 desc: wordPayload.desc,
               });
@@ -307,7 +307,7 @@ const app = {
       };
       const exist = likeList.find((e) => e.word === word);
       if (!exist) {
-        likeList.push(obj);
+        likeList.unshift(obj);
         this.activeLikeButton(true);
       } else {
         likeList = likeList.filter((e) => e.word !== word);
