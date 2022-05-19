@@ -31,10 +31,12 @@ const { app, BrowserWindow, ipcMain, dialog } = require("electron");
 const path = require("path");
 const Model = require("./src/main/electron/model");
 const writeWord = require("./src/main/electron/writeFile");
+const EventEmitter = require("events");
 require("electron-reload")(path.join(__dirname, "../renderer"));
 
 let mainWindow;
 let loadingScreen;
+const loadingEvents = new EventEmitter();
 
 const createWindow = () => {
   // Tạo Window mới với
@@ -92,11 +94,14 @@ const createLoadingScreen = () => {
   loadingScreen.webContents.on("did-finish-load", () => {
     loadingScreen.show();
 
-    for (let i = 0; i < 26; i++) {
-      const { tree, length } = Model.init("av", (i + 10).toString(36));
-      count += length;
-      forestWords.push(tree);
-    }
+    setTimeout(() => {
+      for (let i = 0; i < 26; i++) {
+        const { tree, length } = Model.init("av", (i + 10).toString(36));
+        count += length;
+        forestWords.push(tree);
+      }
+      loadingEvents.emit("finished");
+    }, 1100);
   });
 };
 
@@ -105,13 +110,18 @@ let count = 0;
 
 app.whenReady().then(() => {
   createLoadingScreen();
-  createWindow();
+
+  // Our loadingEvents object listens for 'finished'
+  loadingEvents.on("finished", () => {
+    createWindow();
+  });
 
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
 });
 
+//Lắng nghe lấy số lượng từ
 ipcMain.on("get-total-word", (event, payload) => {
   if (count) {
     mainWindow.webContents.send("total-word", count);
@@ -196,6 +206,7 @@ ipcMain.on("add-word", (event, payload) => {
   }
 });
 
+//MacOS config
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") app.quit();
 });
