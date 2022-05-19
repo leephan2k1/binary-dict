@@ -34,6 +34,7 @@ const writeWord = require("./src/main/electron/writeFile");
 require("electron-reload")(path.join(__dirname, "../renderer"));
 
 let mainWindow;
+let loadingScreen;
 
 const createWindow = () => {
   // Tạo Window mới với
@@ -44,6 +45,7 @@ const createWindow = () => {
     height: 750,
     minHeight: 650,
     maxHeight: 750,
+    show: false,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
@@ -52,34 +54,62 @@ const createWindow = () => {
   });
 
   // Không cần menu (production)
-  // mainWindow.removeMenu();
+  mainWindow.removeMenu();
 
   // Tải file html và hiển thị
   // mainWindow.loadURL("file:///src/renderer/index.html");
   mainWindow.loadFile(path.join(__dirname, "src", "renderer", "index.html"));
 
-  mainWin.webContents.openDevTools();
+  mainWindow.webContents.on("did-finish-load", () => {
+    /// then close the loading screen window and show the main window
+    if (loadingScreen) {
+      loadingScreen.close();
+    }
+    mainWindow.show();
+  });
+
+  // mainWindow.webContents.openDevTools();
 };
 
-app.whenReady().then(() => {
-  createWindow();
-  app.on("activate", () => {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow();
+const createLoadingScreen = () => {
+  /// create a browser window
+  loadingScreen = new BrowserWindow({
+    width: 500,
+    height: 300,
+    transparent: true,
+    frame: false,
+    alwaysOnTop: true,
   });
-});
 
-app.on("window-all-closed", () => {
-  if (process.platform !== "darwin") app.quit();
-});
+  loadingScreen.setResizable(false);
+
+  loadingScreen.loadFile(
+    path.join(__dirname, "src", "renderer", "splash.html")
+  );
+
+  loadingScreen.on("closed", () => (loadingScreen = null));
+
+  loadingScreen.webContents.on("did-finish-load", () => {
+    loadingScreen.show();
+
+    for (let i = 0; i < 26; i++) {
+      const { tree, length } = Model.init("av", (i + 10).toString(36));
+      count += length;
+      forestWords.push(tree);
+    }
+  });
+};
 
 const forestWords = [];
 let count = 0;
-app.on("ready", () => {
-  for (let i = 0; i < 26; i++) {
-    const { tree, length } = Model.init("av", (i + 10).toString(36));
-    count += length;
-    forestWords.push(tree);
-  }
+
+app.whenReady().then(() => {
+  createLoadingScreen();
+  createWindow();
+
+  app.on("activate", () => {
+    if (BrowserWindow.getAllWindows().length === 0) createWindow();
+  });
 });
 
 ipcMain.on("get-total-word", (event, payload) => {
@@ -164,4 +194,8 @@ ipcMain.on("add-word", (event, payload) => {
       mainWindow.webContents.send("add-word-success");
     }
   }
+});
+
+app.on("window-all-closed", () => {
+  if (process.platform !== "darwin") app.quit();
 });
